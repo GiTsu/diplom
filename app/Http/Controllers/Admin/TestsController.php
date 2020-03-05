@@ -24,7 +24,7 @@ class TestsController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.tests.create');
     }
 
     /**

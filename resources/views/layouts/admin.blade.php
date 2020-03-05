@@ -598,12 +598,14 @@
                                 <div tabindex="-1" role="menu" aria-hidden="true"
                                      class="dropdown-menu dropdown-menu-right">
                                     <ul class="nav flex-column">
+                                        @if(Route::has('tests.create'))
                                         <li class="nav-item">
-                                            <a href="javascript:void(0);" class="nav-link">
+                                            <a href="{{route('tests.create')}}" class="nav-link">
                                                 <i class="nav-link-icon lnr-picture"></i>
                                                 <span>Добавить</span>
                                             </a>
                                         </li>
+                                        @endif
                                     </ul>
                                 </div>
                             </div>
