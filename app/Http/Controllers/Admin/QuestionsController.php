@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Model\Question;
 use App\Model\Test;
-use App\User;
 use Illuminate\Http\Request;
 
-class TestsController extends Controller
+class QuestionsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +16,8 @@ class TestsController extends Controller
      */
     public function index()
     {
-        $tests = Test::paginate(20);
-        return view('admin.tests.index', compact('tests'));
+        $questions = Question::paginate(20);
+        return view('admin.questions.index', compact('questions'));
     }
 
     /**
@@ -27,7 +27,7 @@ class TestsController extends Controller
      */
     public function create()
     {
-        return view('admin.tests.create');
+        return view('admin.questions.create');
     }
 
     /**
@@ -40,14 +40,16 @@ class TestsController extends Controller
     {
         $validatedData = $request->validate([
             'title' => 'required|unique:tests|max:255',
+            'type_id' => 'required',
+            'text' => 'required'
         ]);
 
         //dd($validatedData);
-        $model = new Test();
+        $model = new Question();
         $model->fill($request->all());
         $model->save();
 
-        return redirect()->route('tests.index');
+        return redirect()->route('questions.index');
     }
 
     /**

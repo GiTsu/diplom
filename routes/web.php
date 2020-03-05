@@ -10,13 +10,17 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('admin','Admin\DefaultController@index')->name('admin:default:index');
+Route::get('admin', 'Admin\DefaultController@index')->name('admin:default:index');
+
 Route::resource('admin/tests', 'Admin\TestsController');
+Route::resource('admin/questions', 'Admin\QuestionsController');
 
-Auth::routes();
+Auth::routes(['register' => false]); //  нет автоматической регистрации
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@index')->name('site:index');
 
-Auth::routes();
+Route::get('/home', 'HomeController@home')->name('home');
 
-Route::get('/home', 'HomeController@index')->name('home');
+
+
+

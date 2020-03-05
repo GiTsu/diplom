@@ -1,34 +1,32 @@
 @extends('layouts.admin')
-@section('pageTitle', 'Список тестов')
-@section('pageSubTitle', 'Подзаголовок')
+@section('pageTitle', 'Список вопросов')
+@section('pageSubTitle', '')
 @section('content')
-    {{ $tests->links() }}
+    {{ $questions->links() }}
     <table class="mb-0 table table-striped">
         <thead>
         <tr>
             <th>#</th>
+            <th>Тип</th>
             <th>Название</th>
-            <th>Составитель</th>
-            <th>Вопросов</th>
+            <th>Ответов</th>
             <th></th>
         </tr>
         </thead>
         <tbody>
 
-        @foreach ($tests as $test)
+        @foreach ($questions as $question)
             <tr>
-                <th scope="row">{{$test->id}}</th>
+                <th scope="row">{{$question->id}}</th>
+                <td>тип-здесь</td>
                 <td>
-                    <a href="{{route('tests.show', ['test'=>$test->id])}}">
-                        {{$test->title}}
+                    <a href="{{route('questions.show', ['question'=>$question->id])}}">
+                        {{$question->title}}
                     </a>
                 </td>
-                <td></td>
-                <td></td>
-                <th></th>
+                <td>0</td>
             </tr>
         @endforeach
-
         </tbody>
     </table>
 @endsection
@@ -45,11 +43,11 @@
             <div tabindex="-1" role="menu" aria-hidden="true"
                  class="dropdown-menu dropdown-menu-right">
                 <ul class="nav flex-column">
-                    @if(Route::has('tests.create'))
+                    @if(Route::has('questions.create'))
                         <li class="nav-item">
-                            <a href="{{route('tests.create')}}" class="nav-link">
+                            <a href="{{route('questions.create')}}" class="nav-link">
                                 <i class="nav-link-icon lnr-picture"></i>
-                                <span>Новый тест</span>
+                                <span>Новый вопрос</span>
                             </a>
                         </li>
                     @endif
