@@ -9,7 +9,9 @@
     "license": "MIT",
     "require": {
         "php": "^7.2.5",
+        "arrilot/laravel-widgets": "^3.13",
         "fideloper/proxy": "^4.0",
+        "kodeine/laravel-acl": "^2.0",
         "laravel/framework": "^6.0",
         "laravel/tinker": "^2.0",
         "laravelcollective/html": "^6.1"
