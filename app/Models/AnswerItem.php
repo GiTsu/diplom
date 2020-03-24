@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Model;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Results extends Model
+class AnswerItem extends Model
 {
     public $timestamps = false;
 }

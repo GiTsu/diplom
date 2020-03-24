@@ -188,13 +188,20 @@
                             </a>
                             <ul>
                                 <li>
-                                    <a href="components-tabs.html">
+                                    <a href="{{route('user.index')}}">
                                         <i class="metismenu-icon">
                                         </i> Все пользователи
                                     </a>
                                 </li>
+                                <li>
+                                    <a href="{{route('role.index')}}">
+                                        <i class="metismenu-icon">
+                                        </i> Управление доступом
+                                    </a>
+                                </li>
                             </ul>
                         </li>
+                        @yield('dopMenu')
                     </ul>
                 </div>
             </div>
@@ -219,16 +226,20 @@
                     </div>
                 </div>
                 <div class="row">
-                    @if($errors->any())
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
-                    @yield('content')
+                    <div class="col-12">
+                        @if($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+                    </div>
+                    <div class="col-12">
+                        @yield('content')
+                    </div>
                 </div>
             </div>
             <div class="app-wrapper-footer">
@@ -271,7 +282,12 @@
         </div>
         <script src="http://maps.google.com/maps/api/js?sensor=true"></script>
     </div>
+
+    @yield('modalDen')
+
 </div>
+
 <script type="text/javascript" src="./assets/scripts/main.js"></script>
+
 </body>
 </html>

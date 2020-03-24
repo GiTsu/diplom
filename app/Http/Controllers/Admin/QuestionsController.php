@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Model\Question;
-use App\Model\Test;
+use App\Models\Question;
+use App\Models\Test;
 use Illuminate\Http\Request;
 
 class QuestionsController extends Controller
@@ -60,7 +60,8 @@ class QuestionsController extends Controller
      */
     public function show($id)
     {
-        //
+        $question = Question::findOrFail($id);
+        return view('admin.questions.show', compact('question'));
     }
 
     /**
