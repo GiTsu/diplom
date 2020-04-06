@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Question extends Model
 {
     public $timestamps = false;
-    protected $guarded = [];
+    protected $fillable = ['type_id', 'title', 'text'];
 
     public function tests()
     {

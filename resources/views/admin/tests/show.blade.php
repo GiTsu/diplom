@@ -63,13 +63,25 @@
             Вопросы теста
         </div>
         <div class="card-body">
-            @if($test->questions->isNotEmpty())
-            @else
+            @forelse($test->questions as $question)
+                <div>
+                    <a href="{{route('questions.show', [$question->id])}}">
+                        {{$question->title}}
+                    </a>
+                    <a href="#">отвязать</a>
+                </div>
+            @empty
                 У теста еще нет вопросов
-            @endif
+            @endforelse
         </div>
         <div class="card-footer">
-            Добавить TODO: попап с вводом айди, потом заменить на выпадающий список
+            @widget('GenericModalWidget', [
+            'modal'=>true,
+            'includeView'=>'admin.questions.create_form',
+            'buttonTitle'=>'Добавить вопрос',
+            'modalTitle'=>'Добавление вопроса',
+            'test'=>$test
+            ])
         </div>
     </div>
 @endsection

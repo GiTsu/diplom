@@ -1,15 +1,8 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+// открытый доступ
+Auth::routes(['register' => false]); //  нет автоматической регистрации
+// очистка кеша, реально происходит с параметром ?diplom
 Route::get('/clearcache', function (Request $request) {
     if (!empty(request()) && request()->has('diplom')) {
         //Artisan::call('optimize');
@@ -25,6 +18,21 @@ Route::get('/clearcache', function (Request $request) {
 
 });
 
+/*
+ * Доступ авторизованного пользователя
+ * */
+Route::group([
+    //'prefix' => '/admin',
+    //'namespace' => 'Admin',
+    'middleware' => ['auth'], //, 'acl' - пока проверка только на авторизацию
+    //'is' => 'superadmin',
+], function () {
+    Route::get('/', 'HomeController@index')->name('site:index');
+    Route::get('/home', 'HomeController@home')->name('home');
+    Route::get('/examTest/{test}/', 'HomeController@examTest')->name('test:next');
+    Route::post('/examTest/{test}/', 'HomeController@examTestAnswer')->name('test:answer');
+});
+
 
 /*
  * Самое сокровенное, для суперадмина
@@ -35,35 +43,47 @@ Route::group([
     'middleware' => ['auth'], //, 'acl' - пока проверка только на авторизацию
     //'is' => 'superadmin',
 ], function () {
+    // главная
+    Route::get('/', 'DefaultController@index')->name('admin:default:index');
+
+    // тесты и вопросы
+    Route::resource('/tests', 'TestsController');
+    Route::resource('/questions', 'QuestionsController');
+    Route::resource('/questionItems', 'QuestionItemsController');
+
     /* Контроллеры доступа ACL, роли и пермишены */
+    // resources
+    Route::resource('/user', 'UsersController');
     Route::resource('/role', 'ACL\RoleController');
     Route::resource('/permission', 'ACL\PermissionController');
 
-    // users
-    Route::resource('/user', 'UsersController');
+    // manage user
+    Route::post('/user/{user}/setPassword', 'UsersController@setPassword')->name('user:setPassword');
+    Route::post('/user/{user}/addRole', 'UsersController@addRole')->name('user:addRole');
+    Route::get('/user/{user}/removeRole/{slug}', 'UsersController@removeRole')->name('user:removeRole');
+    Route::post('/user/{user}/assignTest', 'UsersController@assignTest')->name('user:assignTest');
 
-    // permissions
+
+    // manage acl
     Route::post('/permission/addslug/{permission}', 'ACL\PermissionController@addSlug')->name('permission:addslug');
     Route::get('/permission/removeslug/{permission}/{slug}',
         'ACL\PermissionController@removeSlug')->name('permission:removeslug');
     Route::post('/role/addpermission/{role}', 'ACL\RoleController@addPermission')->name('role:addperm');
     Route::get('/role/revokepermission/{role}/{permission}',
         'ACL\RoleController@revokePermission')->name('role:revokeperm');
-    Route::post('/role/assign/{user}', 'ACL\RoleController@assignRole')->name('role:assign');
-    Route::get('/role/revoke/{user}/{role}', 'ACL\RoleController@revokeRole')->name('role:revoke');
+    //Route::post('/role/assign/{user}', 'ACL\RoleController@assignRole')->name('role:assign');
+    //Route::get('/role/revoke/{user}/{role}', 'ACL\RoleController@revokeRole')->name('role:revoke');
+
 });
 
 
-Route::get('admin', 'Admin\DefaultController@index')->name('admin:default:index');
 
-Route::resource('admin/tests', 'Admin\TestsController');
-Route::resource('admin/questions', 'Admin\QuestionsController');
 
-Auth::routes(['register' => false]); //  нет автоматической регистрации
 
-Route::get('/', 'HomeController@index')->name('site:index');
 
-Route::get('/home', 'HomeController@home')->name('home');
+
+
+
 
 
 

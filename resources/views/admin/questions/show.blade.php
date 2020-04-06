@@ -7,7 +7,6 @@
             {{$question->title}}
         </div>
         <div class="card-body">
-            {{$question->text}}
             <div>
                 <table class="table">
                     <tr>
@@ -36,16 +35,22 @@
 
     <div class="main-card mb-3 card">
         <div class="card-header">
-            Вопросы теста
+            Варианты ответа
         </div>
         <div class="card-body">
-            @if($question->questionItems->isNotEmpty())
-            @else
+            @forelse($question->questionItems as $questionItem)
+                <div>
+                    {{$questionItem->text}}
+                    <div>
+                        Правильность: {{$questionItem->is_correct?'Да':'Нет'}}
+                    </div>
+                </div>
+            @empty
                 У вопроса еще нет вариантов ответа
-            @endif
+            @endforelse
         </div>
         <div class="card-footer">
-            @widget('AddQuestionItem')
+            @widget('AddQuestionItem', ['question'=>$question])
         </div>
     </div>
 @endsection

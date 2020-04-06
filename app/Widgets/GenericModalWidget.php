@@ -5,7 +5,7 @@ namespace App\Widgets;
 use App\Widgets\traits\ModalWidgetTrait;
 use Arrilot\Widgets\AbstractWidget;
 
-class AddQuestionItem extends AbstractWidget
+class GenericModalWidget extends AbstractWidget
 {
     use ModalWidgetTrait;
     /**
@@ -14,17 +14,16 @@ class AddQuestionItem extends AbstractWidget
      * @var array
      */
     protected $config = [
-        'modal' => true,
+        'modal' => null,
         'permissionArr' => null,
-        'buttonTitle' => 'Добавить ответ',
-        'modalTitle' => 'Добавление ответа',
-        'question' => null,
+        'includeView' => '',
+        'buttonTitle' => 'кнопка',
+        'modalTitle' => 'заголовоу',
     ];
 
     public function run()
     {
-        // заполнить опции
-        $this->config = $this->mergeModalWidgetOptions('admin.questionItems.create_form', $this->config);
+        $this->config = $this->mergeModalWidgetOptions($this->config['includeView'], $this->config);
         // custom logic
 
         // render content

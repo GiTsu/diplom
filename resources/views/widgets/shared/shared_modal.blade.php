@@ -2,14 +2,14 @@
 {{--dd(get_defined_vars()['__data'])--}}
 <!-- Button trigger modal -->
 
-<button type="button" class="btn mr-2 mb-2 btn-primary" data-toggle="modal" data-target="#dt_{{$formId}}">
+<button type="button" class="{{$buttonClass}}" data-toggle="modal" data-target="#dt_{{$formId}}">
     {{$buttonTitle ?? 'Заголовок кнопки'}}
 </button>
-@section('modalDen')
+@push('modalDen')
     {{--
     `trouble: backdrop закрывает экран, работает некорректно с z-слоями,
     `solution: нужно прееместить вывод модалки выше по dom-дереву
-    --}}S
+    --}}
     <div id="dt_{{$formId}}" class="modal fade bd-example-modal-lg " data-backdrop="true" tabindex="-1" role="dialog"
          aria-labelledby="dt_{{$formId}}" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -34,4 +34,4 @@
             </div>
         </div>
     </div>
-@endsection
+@endpush

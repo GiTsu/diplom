@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Question;
-use App\Models\Test;
+use App\Models\QuestionItem;
 use Illuminate\Http\Request;
 
-class QuestionsController extends Controller
+class QuestionItemsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +16,7 @@ class QuestionsController extends Controller
      */
     public function index()
     {
-        $questions = Question::paginate(20);
-        return view('admin.questions.index', compact('questions'));
+        //
     }
 
     /**
@@ -27,7 +26,7 @@ class QuestionsController extends Controller
      */
     public function create()
     {
-        return view('admin.questions.create');
+        return view('admin.questionItems.create');
     }
 
     /**
@@ -39,20 +38,17 @@ class QuestionsController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'title' => 'required|unique:tests|max:255',
-            'type_id' => 'required',
             'text' => 'required'
         ]);
 
-        //dd($validatedData);
-        $model = new Question();
+        $model = new QuestionItem();
         $model->fill($request->all());
         $model->save();
 
-        // если указан спрятанный id теста
-        $testId = $request->input('test_id');
-        if ($testId && $test = Test::find($testId)) {
-            $test->questions()->attach($model);
+        // если указан спрятанный id вопроса
+        $questionId = $request->input('question_id');
+        if ($questionId && $question = Question::find($questionId)) {
+            $question->questionItems()->attach($model);
         }
 
         return redirect()->back();
@@ -66,8 +62,7 @@ class QuestionsController extends Controller
      */
     public function show($id)
     {
-        $question = Question::findOrFail($id);
-        return view('admin.questions.show', compact('question'));
+        //
     }
 
     /**

@@ -14,6 +14,7 @@ trait ModalWidgetTrait
         'method' => 'post',
         'files' => false,
         'buttonTitle' => 'Заголовок кнопки',
+        'buttonClass' => 'btn mr-2 mb-2 btn-primary',
         'modalTitle' => 'Заголовок модалки',
     ];
 

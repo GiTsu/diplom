@@ -50,9 +50,9 @@
                 <ul class="nav flex-column">
                     @if(Route::has('questions.create'))
                         <li class="nav-item">
-                            <a href="{{route('questions.create')}}" class="nav-link">
+                            <a href="{{route('user.create')}}" class="nav-link">
                                 <i class="nav-link-icon lnr-picture"></i>
-                                <span>Новый вопрос</span>
+                                <span>Добавить пользователя</span>
                             </a>
                         </li>
                     @endif
