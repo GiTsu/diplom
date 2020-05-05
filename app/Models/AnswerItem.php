@@ -9,10 +9,20 @@ class AnswerItem extends Model
     public $timestamps = false;
 
     public $fillable = [
-        'user_id',
-        'test_id',
+        'result_id',
         'question_id',
+        'question_item_id',
         'answer_id',
         'value',
     ];
+
+    public function questionItem()
+    {
+        return $this->belongsTo(QuestionItem::class);
+    }
+
+    public function question()
+    {
+        return $this->belongsTo(Question::class);
+    }
 }

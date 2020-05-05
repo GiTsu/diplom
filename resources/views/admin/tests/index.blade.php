@@ -23,8 +23,8 @@
                         {{$test->title}}
                     </a>
                 </td>
-                <td></td>
-                <td></td>
+                <td>{{$test->creator->name ?? 'не определено'}}</td>
+                <td>{{count($test->questions)}}</td>
                 <th></th>
             </tr>
         @endforeach

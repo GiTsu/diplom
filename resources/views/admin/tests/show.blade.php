@@ -9,13 +9,13 @@
         <div class="card-body">
             {{$test->description}}
             <div>
-                <table class="table">
+                <table class="table table-striped">
                     <tr>
                         <td>
                             Создан:
                         </td>
                         <td>
-                            Кем, Дата, Редактирован:
+                            {{ $test->creator->name ?? 'не определено'  }}
                         </td>
                     </tr>
                     <tr>
@@ -23,7 +23,7 @@
                             Доступен возврат:
                         </td>
                         <td>
-                            {{$test->opt_return}}
+                            {{($test->opt_return==1)?'да':'нет'}}
                         </td>
                     </tr>
                     <tr>
@@ -31,7 +31,7 @@
                             Доступен пропуск:
                         </td>
                         <td>
-                            {{$test->opt_skip}}
+                            {{($test->opt_skip==1)?'да':'нет'}}
                         </td>
                     </tr>
                     <tr>
@@ -39,7 +39,7 @@
                             Завершить все вопросы:
                         </td>
                         <td>
-                            {{$test->opt_fullonly}}
+                            {{($test->opt_fullonly==1)?'да':'нет'}}
                         </td>
                     </tr>
                     <tr>
@@ -47,7 +47,7 @@
                             Ограничение по времени:
                         </td>
                         <td>
-                            {{$test->opt_notime}}
+                            {{($test->opt_notime==1)?'да':'нет'}}
                         </td>
                     </tr>
                 </table>
@@ -68,7 +68,7 @@
                     <a href="{{route('questions.show', [$question->id])}}">
                         {{$question->title}}
                     </a>
-                    <a href="#">отвязать</a>
+                    <a href="#" class="btn btn-danger">отвязать</a>
                 </div>
             @empty
                 У теста еще нет вопросов
@@ -80,8 +80,10 @@
             'includeView'=>'admin.questions.create_form',
             'buttonTitle'=>'Добавить вопрос',
             'modalTitle'=>'Добавление вопроса',
-            'test'=>$test
+            'test'=>$test,
+            'questionTypes'=>$questionTypes
             ])
+            <button class="btn mr-2 mb-2 btn-primary">Выбрать существующий</button>
         </div>
     </div>
 @endsection

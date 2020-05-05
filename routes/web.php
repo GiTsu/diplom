@@ -30,7 +30,7 @@ Route::group([
     Route::get('/', 'HomeController@index')->name('site:index');
     Route::get('/home', 'HomeController@home')->name('home');
     Route::get('/examTest/{test}/', 'HomeController@examTest')->name('test:next');
-    Route::post('/examTest/{test}/', 'HomeController@examTestAnswer')->name('test:answer');
+    Route::post('/answerTest/{result}/', 'HomeController@examTestAnswer')->name('test:answer');
 });
 
 
@@ -48,6 +48,8 @@ Route::group([
 
     // тесты и вопросы
     Route::resource('/tests', 'TestsController');
+    Route::get('/tests/evaluate/{result}/result', 'TestsController@showEvaluate')->name('test:showEvaluate');
+    Route::put('/tests/evaluate/{result}/result', 'TestsController@putEvaluate')->name('test:putEvaluate');
     Route::resource('/questions', 'QuestionsController');
     Route::resource('/questionItems', 'QuestionItemsController');
 

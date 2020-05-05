@@ -11,7 +11,7 @@
                             {{$question->text}}
                         </div>
                         @if($question->questionItems->isNotEmpty())
-                            {{Form::open(['route' => ['test:answer', $test->id], 'method' => 'post']) }}
+                            {{Form::open(['route' => ['test:answer', $result->id], 'method' => 'post']) }}
                             {{Form::hidden('question_id', $question->id)}}
                             @foreach($question->questionItems as $qItem)
                                 <div class="alert alert-info">

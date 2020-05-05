@@ -31,7 +31,7 @@
                                     <td>{{$result->mark ?? 'без оценки'}}</td>
                                     <td>
                                         @if(empty($result->end_at))
-                                            <a href="{{route('test:next', [$test->id])}}">Начать/Продолжить</a>
+                                            <a class="btn btn-primary" href="{{route('test:next', [$test->id])}}">Начать/Продолжить</a>
                                         @else
                                             ---
                                         @endif

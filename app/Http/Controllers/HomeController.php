@@ -6,7 +6,6 @@ use App\Models\AnswerItem;
 use App\Models\Result;
 use App\Models\Test;
 use App\Services\TestService;
-use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -54,29 +53,29 @@ class HomeController extends Controller
 
 
             // считываем запись результата или создаем
-            $userResultRecord = $this->testService->getUserTestResultRecord($user, $test);
+            $result = $this->testService->getUserTestResultRecord($user, $test);
 
 
             $testQuestionCount = $test->questions()->count();
-            $userAnsweredCount = $user->answers()->where('test_id', '=', $test->id)->count();
+            $userAnsweredCount = $result->answers()->count();
+
 
             if ($testQuestionCount == $userAnsweredCount) {
-                // TODO: завершить тест, все отвечено
-                $userResultRecord->end_at = Carbon::now();
-                $userResultRecord->save();
+                // TODO: завершить тест, все отвечено ->endTest()
+                $result->end_at = Carbon::now();
+                $result->save();
                 return redirect()->route('site:index');
             }
             $userAnsweredQuestionMaxId = 0;
 
             if ($userAnsweredCount) {
-                $userAnsweredQuestionMaxId = $user->answers()->where('test_id', '=', $test->id)->max('question_id');
+                $userAnsweredQuestionMaxId = $result->answers()->max('question_id');
             }
-
 
             $question = $this->testService->getNextQuestion($user, $test, $userAnsweredQuestionMaxId);
 
             if ($question !== null) {
-                return view('test.answerQuestion', compact('user', 'test', 'question'));
+                return view('test.answerQuestion', compact('user', 'test', 'question', 'result'));
             }
 
 
@@ -84,18 +83,19 @@ class HomeController extends Controller
         return view('test.errors', ['testErrors' => $this->testService->getServiceErrors()]);
     }
 
-    public function examTestAnswer(Request $request, Test $test)
+    public function examTestAnswer(Request $request, Result $result)
     {
         // TODO: выбрать старый ответ!
         $user = \Auth::user();
+        //dd($request->all());
         $answer = new AnswerItem();
         $answer->fill([
-            'user_id' => $user->id,
-            'test_id' => $test->id,
+            'result_id' => $result->id,
+            'question_item_id' => $request->input('question_items_id'),
             'question_id' => $request->input('question_id'),
-            'value' => $request->input('question_items_id'),
+            'value' => $request->input('question_items_id'), // TODO: при кастомном типе здесь обработка типа вопроса
         ]);
         $answer->save();
-        return redirect()->route('test:next', [$test->id]);
+        return redirect()->route('test:next', [$result->test_id]);
     }
 }

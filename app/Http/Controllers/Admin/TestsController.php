@@ -3,12 +3,27 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Question;
+use App\Models\Result;
 use App\Models\Test;
-use App\User;
 use Illuminate\Http\Request;
 
 class TestsController extends Controller
 {
+    public function showEvaluate(Result $result)
+    {
+        $markArr = Result::getMarkArr();
+        return view('admin.tests.evaluate', compact('result', 'markArr'));
+    }
+
+    public function putEvaluate(Request $request, Result $result)
+    {
+        $result->percent = $request->input('percent');
+        $result->mark = $request->input('mark');
+        $result->save();
+        return redirect()->back();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -45,6 +60,7 @@ class TestsController extends Controller
         //dd($validatedData);
         $model = new Test();
         $model->fill($request->all());
+        $model->user_id = \Auth::user()->id;
         $model->save();
 
         return redirect()->route('tests.index');
@@ -58,8 +74,9 @@ class TestsController extends Controller
      */
     public function show($id)
     {
-        $test = Test::findOrFail($id);
-        return view('admin.tests.show', compact('test'));
+        $test = Test::with('creator')->findOrFail($id);
+        $questionTypes = Question::getTypes();
+        return view('admin.tests.show', compact('test', 'questionTypes'));
     }
 
     /**

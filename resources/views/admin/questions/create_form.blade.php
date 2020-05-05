@@ -14,7 +14,7 @@
 
                 <div class="form-group">
                     {{Form::label('type_id', 'Тип вопроса')}}
-                    {{Form::select('type_id',[1=>'Создать типы'], '', ['class' => 'form-control'])}}
+                    {{Form::select('type_id',$questionTypes, '', ['class' => 'form-control'])}}
                     <small class="form-text text-muted">задает манеру ответа</small>
                 </div>
 

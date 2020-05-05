@@ -84,8 +84,16 @@
         </div>
         <div class="card-body">
             @forelse($user->tests as $test)
+                @php
+                    $resultItem = $test->results()->where('user_id', $user->id)->first();
+                @endphp
                 <div>
                     <a href="{{route('tests.show', [$test->id])}}">{{$test->title}}</a>
+                    @if($resultItem)
+                        <a class="btn btn-warning" href="{{route('test:showEvaluate', [$resultItem->id])}}">Оценить</a>
+                    @else
+                        у теста нет результата
+                    @endif
                 </div>
             @empty
                 У пользователя нет тестов

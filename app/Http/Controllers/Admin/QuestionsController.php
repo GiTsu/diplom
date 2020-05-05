@@ -27,7 +27,8 @@ class QuestionsController extends Controller
      */
     public function create()
     {
-        return view('admin.questions.create');
+        $questionTypes = Question::getTypes();
+        return view('admin.questions.create', compact($questionTypes));
     }
 
     /**
