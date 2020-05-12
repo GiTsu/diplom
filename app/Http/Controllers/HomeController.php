@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AnswerItem;
+use App\Models\Question;
 use App\Models\Result;
 use App\Models\Test;
 use App\Services\TestService;
@@ -43,6 +44,7 @@ class HomeController extends Controller
 
     public function examTest(Request $request, Test $test)
     {
+        app('debugbar')->disable();
         $user = \Auth::user();
         if ($this->testService->canDoTest($user, $test)) {
             // посчитать количество отвеченных вопросов
@@ -72,7 +74,9 @@ class HomeController extends Controller
                 $userAnsweredQuestionMaxId = $result->answers()->max('question_id');
             }
 
+
             $question = $this->testService->getNextQuestion($user, $test, $userAnsweredQuestionMaxId);
+            // dd($testQuestionCount,$userAnsweredCount,$userAnsweredQuestionMaxId,$question);
 
             if ($question !== null) {
                 return view('test.answerQuestion', compact('user', 'test', 'question', 'result'));
@@ -89,11 +93,31 @@ class HomeController extends Controller
         $user = \Auth::user();
         //dd($request->all());
         $answer = new AnswerItem();
+
+        $question = Question::query()->findOrFail($request->input('question_id'));
+        $value = null;
+        switch ($question->type_id) {
+            case Question::SINGLE_QUESTION:
+                $value = $request->input('value');
+                break;
+            case Question::MULTI_QUESTION:
+
+                $value = json_encode($request->input('value'));
+
+                break;
+            case Question::ENTER_QUESTION:
+                $value = $request->input('value');
+                break;
+            case Question::COMPLY_QUESTION:
+                $value = json_encode($request->input('linked'));
+                break;
+        }
+
         $answer->fill([
             'result_id' => $result->id,
-            'question_item_id' => $request->input('question_items_id'),
+            //'question_item_id' => $request->input('question_items_id'),
             'question_id' => $request->input('question_id'),
-            'value' => $request->input('question_items_id'), // TODO: при кастомном типе здесь обработка типа вопроса
+            'value' => $value, // TODO: при кастомном типе здесь обработка типа вопроса
         ]);
         $answer->save();
         return redirect()->route('test:next', [$result->test_id]);

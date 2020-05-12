@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\FormatHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Question;
 use App\Models\Test;
@@ -9,6 +10,19 @@ use Illuminate\Http\Request;
 
 class QuestionsController extends Controller
 {
+    public function linkTest(Request $request)
+    {
+        // если указан спрятанный id теста
+        $testId = $request->input('test_id');
+        $questionId = $request->input('question_id');
+
+        if ($testId && ($test = Test::find($testId)) && ($model = Question::find($questionId))) {
+            $test->questions()->attach($model);
+        }
+
+        return redirect()->back();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -28,7 +42,7 @@ class QuestionsController extends Controller
     public function create()
     {
         $questionTypes = Question::getTypes();
-        return view('admin.questions.create', compact($questionTypes));
+        return view('admin.questions.create', compact('questionTypes'));
     }
 
     /**
@@ -68,7 +82,13 @@ class QuestionsController extends Controller
     public function show($id)
     {
         $question = Question::findOrFail($id);
-        return view('admin.questions.show', compact('question'));
+        $qTypes = Question::getTypes();
+        $filteredList = $question->questionItems->filter(function ($value, $key) {
+            return empty($value->linked_id);
+        });
+
+        $linkAvailable = FormatHelper::getObjectsCollectionFormSelectData($filteredList, 'id', 'text');
+        return view('admin.questions.show', compact('question', 'qTypes', 'linkAvailable'));
     }
 
     /**

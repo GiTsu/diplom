@@ -54,7 +54,7 @@
             </div>
         </div>
         <div class="card-footer">
-            Редактировать Удалить
+            {{--Редактировать Удалить--}}
         </div>
     </div>
 
@@ -63,16 +63,28 @@
             Вопросы теста
         </div>
         <div class="card-body">
-            @forelse($test->questions as $question)
-                <div>
-                    <a href="{{route('questions.show', [$question->id])}}">
-                        {{$question->title}}
-                    </a>
-                    <a href="#" class="btn btn-danger">отвязать</a>
-                </div>
-            @empty
-                У теста еще нет вопросов
-            @endforelse
+            <table class="table table-striped">
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                @forelse($test->questions as $question)
+                    <tr>
+                        <td>
+                            <div>
+                                <a href="{{route('questions.show', [$question->id])}}">
+                                    {{$question->title}}
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            <a href="#" class="btn btn-danger">отвязать</a>
+                        </td>
+                    </tr>
+                @empty
+                    У теста еще нет вопросов
+                @endforelse
+            </table>
         </div>
         <div class="card-footer">
             @widget('GenericModalWidget', [
@@ -83,7 +95,13 @@
             'test'=>$test,
             'questionTypes'=>$questionTypes
             ])
-            <button class="btn mr-2 mb-2 btn-primary">Выбрать существующий</button>
+            @widget('GenericModalWidget', [
+            'modal'=>true,
+            'includeView'=>'admin.questions.enter_id',
+            'buttonTitle'=>'Выбрать существующий',
+            'modalTitle'=>'Выбор существующего',
+            'test'=>$test,
+            ])
         </div>
     </div>
 @endsection

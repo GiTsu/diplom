@@ -2,6 +2,12 @@
 @section('pageTitle', 'Оценка результата теста')
 @section('pageSubTitle', 'Подзаголовок')
 @section('content')
+    <style>
+        .status-chosen
+        {
+            background-color: #b0d4f1;
+        }
+    </style>
     <div class="card mb-2">
         <div class="card-header">
             Ответы на тест
@@ -22,9 +28,59 @@
                                 <div>
                                     <div class="font-weight-bold  mb-2">Ответ пользователя:</div>
                                     <div class="alert alert-light">
-                                        {{$answer->questionItem->text}}
-                                    </div>
+                                        {{--вывод согласно типу вопроса--}}
+                                        @switch($answer->question->type_id)
+                                            @case(\App\Models\Question::SINGLE_QUESTION)
+                                            один {{$answer->questionItem->text}}
+                                            @break
+                                            @case(\App\Models\Question::MULTI_QUESTION)
+                                            @php
+                                                $items = \App\Models\QuestionItem::query()->whereIn('id', json_decode($answer->value))->each(
+                                                    function($value, $key){
+                                                        //$json= json_decode();
+                                                        echo('<div>'.$value->text.'</div>');
+                                                    }
+                                                );
+                                            @endphp
 
+                                            @break
+                                            @case(\App\Models\Question::ENTER_QUESTION)
+                                            {{$answer->value}}
+                                            @break
+                                            @case(\App\Models\Question::COMPLY_QUESTION)
+                                            @php
+                                                $sootv=json_decode($answer->value);
+                                                if ($sootv){
+                                                    foreach ($sootv as $parent=>$child){
+                                                        //dd($parent, $child);
+                                                        $parentItem = \App\Models\QuestionItem::query()->find((int)$parent);
+                                                        $childItem = \App\Models\QuestionItem::query()->find((int)$child);
+                                                        if ($parentItem && $childItem){
+                                                            echo('<div>'.$parentItem->text.' : '.$childItem->text.'</div>');
+                                                        }
+                                                    }
+                                                }
+                                            @endphp
+
+                                            @break
+                                        @endswitch
+                                    </div>
+                                </div>
+                                <div class="alert alert-light status-box" data-status="">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <a class="btn btn-block btn-outline-success font-weight-bold status-change"
+                                               data-status="1">
+                                                Верно
+                                            </a>
+                                        </div>
+                                        <div class="col-6">
+                                            <a class="btn btn-block btn-outline-danger  font-weight-bold  status-change"
+                                               data-status="0">
+                                                Не верно
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         @endforeach
@@ -63,6 +119,46 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        function recalc_percent() {
+            var total = $('.status-box').length;
+            var correct = $('.status-correct').length;
+            var percent = (total!=0)?correct/total:0;
+            console.log(total);
+            console.log(correct);
+            $('#percent').val(100*percent+'%');
+        }
+
+        $(document).ready(function () {
+            $('.status-change').click(function () {
+                var status = $(this).data('status');
+                console.log(status);
+                if (status == '1') {
+                    // отметить как верный
+                    $(this).parents('.status-box').each(function (index, element) {
+                        //console.log(element);
+                        $(element).removeClass('status-incorrect');
+                        $(element).find('a.status-change').removeClass('status-chosen');
+                        $(element).addClass('status-correct');
+                        $(element).data('status', '1');
+                        //console.log($(element).data('status'));
+                    });
+                } else {
+                    // отметить как не верный
+                    $(this).parents('.status-box').each(function (index, element) {
+                        $(element).removeClass('status-correct');
+                        $(element).find('a.status-change').removeClass('status-chosen');
+                        $(element).addClass('status-incorrect');
+                        $(element).data('status', '0');
+                        //console.log($(element).data('status'));
+                    });
+                }
+                $(this).addClass('status-chosen');
+                recalc_percent();
+            });
+            console.log("ready!");
+        });
+    </script>
 @endsection
 @section('actionsMenu')
 

@@ -27,7 +27,7 @@
                                     <td>{{$test->title}}</td>
                                     <td>{{$result->start_at ?? 'не начинался'}}</td>
                                     <td>{{$result->end_at ?? 'не закончен'}}</td>
-                                    <td>{{$result->percent ?? 'тест не пройден'}}</td>
+                                    <td>{{$result->percent ?? 'тест не оценен'}}</td>
                                     <td>{{$result->mark ?? 'без оценки'}}</td>
                                     <td>
                                         @if(empty($result->end_at))

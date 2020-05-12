@@ -14,7 +14,7 @@
                             Тип:
                         </td>
                         <td>
-                            {{$question->type_id}}
+                            {{$qTypes[$question->type_id]}}
                         </td>
                     </tr>
                     <tr>
@@ -38,16 +38,52 @@
             Варианты ответа
         </div>
         <div class="card-body">
-            @forelse($question->questionItems as $questionItem)
-                <div>
-                    {{$questionItem->text}}
-                    <div>
-                        Правильность: {{$questionItem->is_correct?'Да':'Нет'}}
-                    </div>
-                </div>
-            @empty
-                У вопроса еще нет вариантов ответа
-            @endforelse
+            {{-- TODO: вывод вариантов ответа в зависимости от типа--}}
+            <table class="table table-striped">
+                <tr>
+                    <td>
+                        Правильный
+                    </td>
+                    <td>
+                        Ответ
+                    </td>
+                    <td>
+                        Соответствие
+                    </td>
+                </tr>
+
+                @forelse($question->questionItems as $questionItem)
+                    <tr>
+                        <td>
+                            @if($question->type_id!=\App\Models\Question::COMPLY_QUESTION)
+                                <span class="badge badge-{{$questionItem->is_correct?'success':'warning'}}">
+                                {{$questionItem->is_correct?'Да':'Нет'}}
+                            </span>
+                            @else
+                                ---
+                            @endif
+                        </td>
+                        <td>
+                            <div>
+                                {{$questionItem->text}}
+                            </div>
+                        </td>
+                        <td>
+                            @if($question->type_id==\App\Models\Question::COMPLY_QUESTION)
+                                {{Form::open(['route'=>['questions:link', $questionItem->id]])}}
+                                {{Form::select('linked_id', $linkAvailable, $questionItem->linked_id, ['class'=>'', 'placeholder'=>'не связан'])}}
+                                {{Form::submit('Связать')}}
+                                {{Form::close()}}
+                            @else
+                                не требуется
+                            @endif
+                        </td>
+                    </tr>
+                @empty
+                    У вопроса еще нет вариантов ответа
+                @endforelse
+
+            </table>
         </div>
         <div class="card-footer">
             @widget('AddQuestionItem', ['question'=>$question])

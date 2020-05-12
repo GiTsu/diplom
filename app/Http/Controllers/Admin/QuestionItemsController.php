@@ -9,6 +9,17 @@ use Illuminate\Http\Request;
 
 class QuestionItemsController extends Controller
 {
+    public function linkQuestions(Request $request, QuestionItem $questionItem)
+    {
+        $linkId = $request->input('linked_id', null);
+        //if ($linkId){
+        $questionItem->linked_id = $linkId;
+        $questionItem->save();
+        //}
+
+        return redirect()->back();
+    }
+
     /**
      * Display a listing of the resource.
      *

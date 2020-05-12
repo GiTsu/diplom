@@ -40,8 +40,8 @@ Route::group([
 Route::group([
     'prefix' => '/admin',
     'namespace' => 'Admin',
-    'middleware' => ['auth'], //, 'acl' - пока проверка только на авторизацию
-    //'is' => 'superadmin',
+    'middleware' => ['auth', 'acl'],
+    'is' => 'teacher',
 ], function () {
     // главная
     Route::get('/', 'DefaultController@index')->name('admin:default:index');
@@ -51,7 +51,10 @@ Route::group([
     Route::get('/tests/evaluate/{result}/result', 'TestsController@showEvaluate')->name('test:showEvaluate');
     Route::put('/tests/evaluate/{result}/result', 'TestsController@putEvaluate')->name('test:putEvaluate');
     Route::resource('/questions', 'QuestionsController');
+    Route::post('/questions/linkTest','QuestionsController@linkTest')->name('question:linkTest');
+
     Route::resource('/questionItems', 'QuestionItemsController');
+    Route::post('/questions/{questionItem}/link','QuestionItemsController@linkQuestions')->name('questions:link');
 
     /* Контроллеры доступа ACL, роли и пермишены */
     // resources

@@ -24,6 +24,7 @@
     * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
     -->
     <link href="./main.css" rel="stylesheet">
+    <script type="text/javascript" src="{{asset('js/jquery-3.5.1.min.js')}}"></script>
 </head>
 <body>
 <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
@@ -61,6 +62,7 @@
                 </span>
         </div>
         <div class="app-header__content">
+            {{--
             <div class="app-header-left">
                 <div class="search-wrapper">
                     <div class="input-holder">
@@ -84,6 +86,8 @@
                     </li>
                 </ul>
             </div>
+            --}}
+            {{--
             <div class="app-header-right">
                 <div class="header-btn-lg pr-0">
                     <div class="widget-content p-0">
@@ -118,6 +122,7 @@
                     </div>
                 </div>
             </div>
+            --}}
         </div>
     </div>
 
@@ -244,6 +249,7 @@
             </div>
             <div class="app-wrapper-footer">
                 <div class="app-footer">
+                    {{--
                     <div class="app-footer__inner">
                         <div class="app-footer-left">
                             <ul class="nav">
@@ -277,6 +283,7 @@
                             </ul>
                         </div>
                     </div>
+                    --}}
                 </div>
             </div>
         </div>

@@ -111,7 +111,9 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        dd('Удаление не реализовано', $id);
+        // TODO: реализовать удаление пользователя
+        return redirect()->back();
+
     }
 
 

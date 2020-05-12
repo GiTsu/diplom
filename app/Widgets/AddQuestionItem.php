@@ -2,12 +2,15 @@
 
 namespace App\Widgets;
 
+use App\Helpers\FormatHelper;
+use App\Models\Question;
 use App\Widgets\traits\ModalWidgetTrait;
 use Arrilot\Widgets\AbstractWidget;
 
 class AddQuestionItem extends AbstractWidget
 {
     use ModalWidgetTrait;
+
     /**
      * The configuration array.
      *
@@ -27,7 +30,11 @@ class AddQuestionItem extends AbstractWidget
         $this->config = $this->mergeModalWidgetOptions('admin.questionItems.create_form', $this->config);
         // custom logic
 
-        // render content
-        return $this->renderModalWidgetContent($this->config);
+        // если не ввод с клавиатуры, то дать создать
+        if ($this->config['question']->type_id !== Question::ENTER_QUESTION) {
+            // render content
+            return $this->renderModalWidgetContent($this->config);
+        }
+        return 'ввод вариантов ответов не поддерживается';
     }
 }

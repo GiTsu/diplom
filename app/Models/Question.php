@@ -6,16 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class Question extends Model
 {
+    const SINGLE_QUESTION = 0;
+    const MULTI_QUESTION = 1;
+    const ENTER_QUESTION = 2;
+    const COMPLY_QUESTION = 3;
     public $timestamps = false;
     protected $fillable = ['type_id', 'title', 'text'];
 
     public static function getTypes()
     {
         return [
-            0 => 'Правильный вариант',
-            1 => 'Несколько правильных вариантов',
-            2 => 'Ввод текста ответа',
-            3 => 'выбор соответствия',
+            self::SINGLE_QUESTION => 'Правильный вариант',
+            self::MULTI_QUESTION => 'Несколько правильных вариантов',
+            self::ENTER_QUESTION => 'Ввод текста ответа',
+            self::COMPLY_QUESTION => 'выбор соответствия',
         ];
     }
 
