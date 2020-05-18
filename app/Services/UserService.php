@@ -100,6 +100,13 @@ class UserService
     {
         $role = Role::find($roleId);
         if ($role) {
+            $roles = $user->getRoles();
+            // новый код проверки
+            if ($roles) {
+                $this->addServiceError('У пользователя уже есть роль, сначала удалите ее', ['role'=>$roles]);
+                return false;
+            }
+            // новый код проверки
             return $this->addUserRoleBySlug($user, $role->slug);
         }
         $this->addServiceError('Не найдена роль с таким ID', ['role_id' => $roleId]);

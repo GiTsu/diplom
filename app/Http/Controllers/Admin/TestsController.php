@@ -6,10 +6,18 @@ use App\Http\Controllers\Controller;
 use App\Models\Question;
 use App\Models\Result;
 use App\Models\Test;
+use App\Services\TestService;
 use Illuminate\Http\Request;
 
 class TestsController extends Controller
 {
+    private $testService;
+
+    public function __construct(TestService $testService)
+    {
+        $this->testService = $testService;
+    }
+
     public function showEvaluate(Result $result)
     {
         $markArr = Result::getMarkArr();
@@ -53,17 +61,10 @@ class TestsController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'title' => 'required|unique:tests|max:255',
-        ]);
-
-        //dd($validatedData);
-        $model = new Test();
-        $model->fill($request->all());
-        $model->user_id = \Auth::user()->id;
-        $model->save();
-
-        return redirect()->route('tests.index');
+        if (!$this->testService->createNewTest($request->all())) {
+            return redirect()->back()->withErrors($this->testService->getServiceErrors());
+        }
+        return redirect()->back();
     }
 
     /**

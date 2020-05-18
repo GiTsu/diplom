@@ -45,6 +45,9 @@ class HomeController extends Controller
     public function examTest(Request $request, Test $test)
     {
         app('debugbar')->disable();
+        $goPrevious = $request->input('goPrevious');
+        $goNext = $request->input('goNext');
+        $finish = $request->input('finish');
         $user = \Auth::user();
         if ($this->testService->canDoTest($user, $test)) {
             // посчитать количество отвеченных вопросов
@@ -61,25 +64,47 @@ class HomeController extends Controller
             $testQuestionCount = $test->questions()->count();
             $userAnsweredCount = $result->answers()->count();
 
+            // проверить автоматическое завершение теста
+            if ($test->opt_timelimit) { // TODO: флеш мессадж о завершении теста
+                $diff = Carbon::now()->diffInMinutes($result->start_at);
+                if ($diff >= $test->opt_timelimit) {
+                    $this->testService->endTest($result);
+                }
+            }
 
-            if ($testQuestionCount == $userAnsweredCount) {
-                // TODO: завершить тест, все отвечено ->endTest()
-                $result->end_at = Carbon::now();
-                $result->save();
+            // проверить кнопку завершения
+            if ($finish) { // TODO: дописать проверку на все ответы
+                $this->testService->endTest($result);
+            }
+            // если все вопросы отвечены и нельзя перематывать назад - автоматически завершить тест
+            if (($testQuestionCount == $userAnsweredCount) && empty($test->opt_previous)) {
+                $this->testService->endTest($result);
+            }
+
+            if (!empty($result->end_at)) {
                 return redirect()->route('site:index');
             }
-            $userAnsweredQuestionMaxId = 0;
 
-            if ($userAnsweredCount) {
+            // навигация по вопросам
+            $question = null;
+            //dd($goPrevious,$goNext);
+            if ($goPrevious || $goNext) {
+                // если есть перемотка от конкретного ID, попытаться выбрать по нему
+                if ($goPrevious) {
+                    $question = $this->testService->getPreviousQuestion($user, $test, $goPrevious);
+                }
+                if ($goNext) {
+                    $question = $this->testService->getNextQuestion($user, $test, $goNext);
+                }
+            }
+            if ($question == null) {
                 $userAnsweredQuestionMaxId = $result->answers()->max('question_id');
+                $question = $this->testService->getNextQuestion($user, $test, $userAnsweredQuestionMaxId);
             }
 
-
-            $question = $this->testService->getNextQuestion($user, $test, $userAnsweredQuestionMaxId);
-            // dd($testQuestionCount,$userAnsweredCount,$userAnsweredQuestionMaxId,$question);
-
             if ($question !== null) {
-                return view('test.answerQuestion', compact('user', 'test', 'question', 'result'));
+                $answerItem = $this->testService->getQuestionAnswerItem($result, $question);
+                return view('test.answerQuestion', compact('user', 'test', 'question', 'answerItem', 'result'));
             }
 
 
@@ -92,10 +117,10 @@ class HomeController extends Controller
         // TODO: выбрать старый ответ!
         $user = \Auth::user();
         //dd($request->all());
-        $answer = new AnswerItem();
 
         $question = Question::query()->findOrFail($request->input('question_id'));
         $value = null;
+        // обработка типа вопроса
         switch ($question->type_id) {
             case Question::SINGLE_QUESTION:
                 $value = $request->input('value');
@@ -112,14 +137,18 @@ class HomeController extends Controller
                 $value = json_encode($request->input('linked'));
                 break;
         }
-
+        // выбираем или создаем новый ответ
+        $answer = $this->testService->getQuestionAnswerItem($result, $question);
+        if (!$answer) {
+            $answer = new AnswerItem();
+        }
         $answer->fill([
             'result_id' => $result->id,
             //'question_item_id' => $request->input('question_items_id'),
             'question_id' => $request->input('question_id'),
-            'value' => $value, // TODO: при кастомном типе здесь обработка типа вопроса
+            'value' => $value,
         ]);
         $answer->save();
-        return redirect()->route('test:next', [$result->test_id]);
+        return redirect()->route('test:next', ['test' => $result->test_id, 'goNext' => $question->id]);
     }
 }
