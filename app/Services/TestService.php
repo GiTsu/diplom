@@ -43,6 +43,9 @@ class TestService
 
     public function getNextQuestion(User $user, Test $test, $lastId = 0)
     {
+        if (empty($lastId)) { // fix null TODO: вынести в тип параметра int
+            $lastId = 0;
+        }
         // выбрать следующий за последним
         $question = $test->questions()->where('question_id', '>', $lastId)->orderBy('id', 'asc')->first();
 
@@ -55,6 +58,9 @@ class TestService
 
     public function getPreviousQuestion(User $user, Test $test, $lastId = 0)
     {
+        if (empty($lastId)) { // fix null
+            $lastId = 0;
+        }
         // выбрать следующий за последним
         $question = $test->questions()->where('question_id', '<', $lastId)->orderBy('id', 'desc')->first();
 
