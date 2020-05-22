@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\FormatHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Question;
 use App\Models\Result;
@@ -26,7 +27,7 @@ class TestsController extends Controller
 
     public function putEvaluate(Request $request, Result $result)
     {
-        $result->percent = $request->input('percent');
+        $result->percent = str_replace('%', '', $request->input('percent'));
         $result->mark = $request->input('mark');
         $result->save();
         return redirect()->back();
@@ -61,10 +62,10 @@ class TestsController extends Controller
      */
     public function store(Request $request)
     {
-        if (!$this->testService->createNewTest($request->all())) {
+        if (!$test = $this->testService->createNewTest($request->all())) {
             return redirect()->back()->withErrors($this->testService->getServiceErrors());
         }
-        return redirect()->back();
+        return redirect()->route('tests.show', [$test->id]);
     }
 
     /**
@@ -77,7 +78,8 @@ class TestsController extends Controller
     {
         $test = Test::with('creator')->findOrFail($id);
         $questionTypes = Question::getTypes();
-        return view('admin.tests.show', compact('test', 'questionTypes'));
+        $selectQuestions = FormatHelper::getObjectsCollectionFormSelectData(Question::all(), 'id', 'title');
+        return view('admin.tests.show', compact('test', 'questionTypes', 'selectQuestions'));
     }
 
     /**
@@ -88,7 +90,9 @@ class TestsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $test = Test::with('creator')->findOrFail($id);
+        $questionTypes = Question::getTypes();
+        return view('admin.tests.edit', compact('test', 'questionTypes'));
     }
 
     /**
@@ -100,7 +104,11 @@ class TestsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $test = Test::with('creator')->findOrFail($id);
+        if (!$this->testService->updateTest($test, $request->all())) {
+            return redirect()->back()->withErrors($this->testService->getServiceErrors());
+        }
+        return redirect()->back();
     }
 
     /**
@@ -111,6 +119,10 @@ class TestsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $test = Test::with('creator')->findOrFail($id);
+        if (!$this->testService->dropTest($test)) {
+            return redirect()->back()->withErrors($this->testService->getServiceErrors());
+        }
+        return redirect()->route('tests.index');
     }
 }

@@ -3,8 +3,7 @@
 @section('pageSubTitle', 'Подзаголовок')
 @section('content')
     <style>
-        .status-chosen
-        {
+        .status-chosen {
             background-color: #b0d4f1;
         }
     </style>
@@ -102,9 +101,9 @@
 
                     <div class="form-group">
                         {{Form::label('percent', 'Процент правильных')}}
-                        {{Form::text('percent', null, ['class'=>'form-control'])}}
+                        {{Form::text('percent', $result->percent.'%', ['class'=>'form-control', 'readonly'=>true])}}
                         <small class="form-text text-muted">
-                            определяется в интерфейсе
+                            определяется в интерфейсе кнопками "Правильно"/"Не правильно"
                         </small>
                     </div>
                     <div class="form-group">
@@ -112,7 +111,7 @@
                         {{Form::select('mark', $markArr, null, ['class'=>'form-control', 'placeholder'=>'без оценки'])}}
                     </div>
                     <div class="text-right">
-                        {{Form::submit('Редактировать')}}
+                        {{Form::submit('Поставить оценку', ['class'=>'btn btn-primary'])}}
                     </div>
                     {{Form::close()}}
                 </div>
@@ -123,10 +122,10 @@
         function recalc_percent() {
             var total = $('.status-box').length;
             var correct = $('.status-correct').length;
-            var percent = (total!=0)?correct/total:0;
+            var percent = (total != 0) ? correct / total : 0;
             console.log(total);
             console.log(correct);
-            $('#percent').val(100*percent+'%');
+            $('#percent').val(100 * percent + '%');
         }
 
         $(document).ready(function () {

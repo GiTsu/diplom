@@ -6,10 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Language" content="en">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Analytics Dashboard - This is an example dashboard created using build-in elements and components.</title>
+    <title>{{config('app.name')}}</title>
     <meta name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no"/>
-    <meta name="description" content="This is an example dashboard created using build-in elements and components.">
+    <meta name="description" content="">
     <meta name="msapplication-tap-highlight" content="no">
     <base href="/">
 
@@ -30,7 +30,7 @@
 <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
     <div class="app-header header-shadow">
         <div class="app-header__logo">
-            <div class="logo-src"></div>
+            <div>&nbsp</div> {{--class="logo-src"--}}
             <div class="header__pane ml-auto">
                 <div>
                     <button type="button" class="hamburger close-sidebar-btn hamburger--elastic"
@@ -62,67 +62,6 @@
                 </span>
         </div>
         <div class="app-header__content">
-            {{--
-            <div class="app-header-left">
-                <div class="search-wrapper">
-                    <div class="input-holder">
-                        <input type="text" class="search-input" placeholder="Type to search">
-                        <button class="search-icon"><span></span></button>
-                    </div>
-                    <button class="close"></button>
-                </div>
-                <ul class="header-menu nav">
-                    <li class="dropdown nav-item">
-                        <a href="{{route('tests.index')}}" class="nav-link">
-                            <i class="nav-link-icon fa fa-cog"></i>
-                            Админка
-                        </a>
-                    </li>
-                    <li class="btn-group nav-item">
-                        <a href="{{route('tests.index')}}" class="nav-link">
-                            <i class="nav-link-icon fa fa-edit"></i>
-                            Пройти тесты
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            --}}
-            {{--
-            <div class="app-header-right">
-                <div class="header-btn-lg pr-0">
-                    <div class="widget-content p-0">
-                        <div class="widget-content-wrapper">
-                            <div class="widget-content-left">
-                                <div class="btn-group">
-                                    <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                       class="p-0 btn">
-                                        <img width="42" class="rounded-circle" src="" alt="">
-                                        <i class="fa fa-angle-down ml-2 opacity-8"></i>
-                                    </a>
-                                    <div tabindex="-1" role="menu" aria-hidden="true"
-                                         class="dropdown-menu dropdown-menu-right">
-                                        <button type="button" tabindex="0" class="dropdown-item">User Account</button>
-                                        <button type="button" tabindex="0" class="dropdown-item">Settings</button>
-                                        <h6 tabindex="-1" class="dropdown-header">Header</h6>
-                                        <button type="button" tabindex="0" class="dropdown-item">Actions</button>
-                                        <div tabindex="-1" class="dropdown-divider"></div>
-                                        <button type="button" tabindex="0" class="dropdown-item">Dividers</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="widget-content-left  ml-3 header-user-info">
-                                <div class="widget-heading">
-                                    Superadmin
-                                </div>
-                                <div class="widget-subheading">
-                                    superadmin
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            --}}
         </div>
     </div>
 
@@ -227,7 +166,9 @@
                                 </div>
                             </div>
                         </div>
-                        @yield('actionsMenu')
+                        <div class="page-title-actions">
+                            @yield('actionsMenu')
+                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -249,41 +190,6 @@
             </div>
             <div class="app-wrapper-footer">
                 <div class="app-footer">
-                    {{--
-                    <div class="app-footer__inner">
-                        <div class="app-footer-left">
-                            <ul class="nav">
-                                <li class="nav-item">
-                                    <a href="javascript:void(0);" class="nav-link">
-                                        Footer Link 1
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="javascript:void(0);" class="nav-link">
-                                        Footer Link 2
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="app-footer-right">
-                            <ul class="nav">
-                                <li class="nav-item">
-                                    <a href="javascript:void(0);" class="nav-link">
-                                        Footer Link 3
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="javascript:void(0);" class="nav-link">
-                                        <div class="badge badge-success mr-1 ml-0">
-                                            <small>NEW</small>
-                                        </div>
-                                        Footer Link 4
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    --}}
                 </div>
             </div>
         </div>

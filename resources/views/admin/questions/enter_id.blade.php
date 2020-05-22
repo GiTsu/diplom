@@ -7,8 +7,8 @@
                     {{ Form::hidden('test_id', $test->id, []) }}
                 @endif
                 <div class="form-group">
-                    {{Form::label('question_id', 'id вопроса')}}
-                    {{Form::number('question_id', '', ['class' => 'form-control'])}}
+                    {{Form::label('question_id', 'Вопрос:')}}
+                    {{Form::select('question_id', $selectQuestions,null, ['class' => 'form-control'])}}
                     <small class="form-text text-muted"></small>
                 </div>
                 <button type="submit" class="btn btn-primary">Привязать</button>

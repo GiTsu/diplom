@@ -1,43 +1,44 @@
 @extends('layouts.admin')
-@section('pageTitle', 'Новый тест')
+@section('pageTitle', 'Редактирование теста')
 @section('pageSubTitle', '')
 @section('content')
     <div class="card">
         <div class="card-body">
             <div class="row">
                 <div class="col">
-                    {{Form::open(['route' => 'tests.store'])}}
+
+                    {{Form::model($test, ['route' => ['tests.update', $test->id], 'method'=>'put'])}}
 
                     <div class="form-group">
                         {{Form::label('title', 'Название теста')}}
-                        {{Form::text('title', '', ['class' => 'form-control'])}}
+                        {{Form::text('title', null, ['class' => 'form-control'])}}
                         <small class="form-text text-muted">отображается в списках</small>
                     </div>
 
                     <div class="form-group">
                         {{Form::label('description', 'Описание теста')}}
-                        {{Form::textarea('description', '', ['class' => 'form-control'])}}
+                        {{Form::textarea('description', null, ['class' => 'form-control'])}}
                         <small class="form-text text-muted">краткое описание</small>
                     </div>
 
                     <div class="form-group form-check">
-                        {{Form::checkbox('opt_return', 1,null,  ['class'=>'form-check-input'])}}
+                        {{Form::checkbox('opt_return', 1, null, ['class'=>'form-check-input'])}}
                         {{Form::label('description', 'Разрешен возврат', ['class'=>'form-check-label'])}}
                     </div>
 
                     <div class="form-group form-check">
-                        {{Form::checkbox('opt_skip', 1,null,  ['class'=>'form-check-input'])}}
+                        {{Form::checkbox('opt_skip', 1, null, ['class'=>'form-check-input'])}}
                         {{Form::label('opt_skip', 'Разрешен пропуск', ['class'=>'form-check-label'])}}
                     </div>
 
                     <div class="form-group form-check">
-                        {{Form::checkbox('opt_fullonly', 1,null,  ['class'=>'form-check-input'])}}
+                        {{Form::checkbox('opt_fullonly', 1, null, ['class'=>'form-check-input'])}}
                         {{Form::label('opt_fullonly', 'Только полностью', ['class'=>'form-check-label'])}}
                     </div>
 
                     <div class="form-group">
                         {{Form::label('opt_timelimit', 'Длительность теста')}}
-                        {{Form::number('opt_timelimit', '', ['class' => 'form-control'])}}
+                        {{Form::number('opt_timelimit', null, ['class' => 'form-control'])}}
                         <small class="form-text text-muted">в минутах</small>
                     </div>
 
@@ -46,7 +47,7 @@
                         {{Form::label('opt_notime', 'Без ограничений по времени', ['class'=>'form-check-label'])}}
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <button type="submit" class="btn btn-primary">Редактировать</button>
                 </div>
             </div>
         </div>

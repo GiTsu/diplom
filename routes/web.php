@@ -53,8 +53,11 @@ Route::group([
     Route::resource('/questions', 'QuestionsController');
     Route::post('/questions/linkTest','QuestionsController@linkTest')->name('question:linkTest');
 
+
+
     Route::resource('/questionItems', 'QuestionItemsController');
     Route::post('/questions/{questionItem}/link','QuestionItemsController@linkQuestions')->name('questions:link');
+    Route::get('/questions/{questionItem}/unlink','QuestionsController@unlinkTest')->name('questions:unlink');
 
     /* Контроллеры доступа ACL, роли и пермишены */
     // resources

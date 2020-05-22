@@ -10,6 +10,14 @@ use Illuminate\Http\Request;
 
 class QuestionsController extends Controller
 {
+    public function unlinkTest(Request $request, $questionItem)
+    {
+        $question = Question::query()->findOrFail($questionItem);
+        $test = Test::query()->findOrFail($request->input('testId'));
+        $test->questions()->detach($question);
+        return redirect()->back();
+    }
+
     public function linkTest(Request $request)
     {
         // если указан спрятанный id теста
@@ -17,6 +25,7 @@ class QuestionsController extends Controller
         $questionId = $request->input('question_id');
 
         if ($testId && ($test = Test::find($testId)) && ($model = Question::find($questionId))) {
+            // TODO: проверка на повторную привязку
             $test->questions()->attach($model);
         }
 

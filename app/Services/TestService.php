@@ -17,6 +17,7 @@ use App\Services\Traits\ServiceErrorsTrait;
 use App\Services\Traits\ServiceSuccessTrait;
 use App\User;
 use Carbon\Carbon;
+use Illuminate\Validation\Rule;
 
 
 class TestService
@@ -115,5 +116,37 @@ class TestService
             }
         }
         return null;
+    }
+
+    public function updateTest(Test $model, array $fields)
+    {
+        $validationOK = $this->validateByService($fields, [
+            'title' => ['required', 'max:255', Rule::unique('tests')->ignore($model->id)],
+        ]);
+        if ($validationOK) {
+            // обнулить для проставления
+            $model->opt_return = $model->opt_skip = $model->opt_fullonly = $model->opt_notime = 0;
+            //
+            $model->fill($fields);
+            $model->user_id = \Auth::user()->id;
+            // новый код проверки
+            if (!empty($fields['opt_timelimit']) && !empty($fields['opt_notime'])) {
+                $this->addServiceError('Выберите либо длительность теста либо отсутствие ограничения');
+                return false;
+            }
+            // новый код проверки
+            return $model->save();
+        }
+        return false;
+    }
+
+    public function dropTest(Test $model)
+    {
+        try {
+            return $model->delete();
+        } catch (\Throwable $e) {
+            $this->addServiceError('Не удалось удалить тест', []);
+        }
+        return false;
     }
 }

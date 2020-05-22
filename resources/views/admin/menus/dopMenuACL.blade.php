@@ -29,12 +29,13 @@
                 </i> добавить роль
             </a>
         </li>
-        <li>
+       {{-- TODO: вернуть доки <li>
             <a target="_blank" href="https://github.com/kodeine/laravel-acl/wiki/Validate-Permissions-and-Roles">
                 <i class="metismenu-icon">
                 </i> документация
             </a>
         </li>
+        --}}
     </ul>
 </li>
 

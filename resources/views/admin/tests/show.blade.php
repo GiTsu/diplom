@@ -47,14 +47,17 @@
                             Ограничение по времени:
                         </td>
                         <td>
-                            {{($test->opt_notime==1)?'да':'нет'}}
+                            {{($test->opt_notime==1)?'нет':$test->opt_timelimit. ' мин.'}}
                         </td>
                     </tr>
                 </table>
             </div>
         </div>
         <div class="card-footer">
-            {{--Редактировать Удалить--}}
+            <a href="{{route('tests.edit', [$test->id])}}" class="btn btn-primary mr-2 mb-2">Редактировать</a>
+            {{Form::open(['route' => ['tests.destroy', $test->id], 'method'=>'delete'])}}
+            {{Form::submit('Удалить', ['class'=>'btn btn-danger mr-2 mb-2'])}}
+            {{Form::close()}}
         </div>
     </div>
 
@@ -78,7 +81,8 @@
                             </div>
                         </td>
                         <td>
-                            <a href="#" class="btn btn-danger">отвязать</a>
+                            <a href="{{route('questions:unlink',['questionItem'=>$question->id, 'testId'=>$test->id])}}"
+                               class="btn btn-danger">отвязать</a>
                         </td>
                     </tr>
                 @empty
@@ -101,6 +105,7 @@
             'buttonTitle'=>'Выбрать существующий',
             'modalTitle'=>'Выбор существующего',
             'test'=>$test,
+            'selectQuestions'=>$selectQuestions,
             ])
         </div>
     </div>
