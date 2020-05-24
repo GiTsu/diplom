@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Models\AnswerItem;
+use App\Models\Group;
 use App\Models\Result;
 use App\Models\Test;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -39,6 +40,11 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function group()
+    {
+        return $this->belongsTo(Group::class);
+    }
 
     public function tests()
     {

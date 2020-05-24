@@ -26,16 +26,16 @@
         <li>
             <a href="{{route('permission.create')}}">
                 <i class="metismenu-icon">
-                </i> добавить роль
+                </i> добавить пермишен
             </a>
         </li>
-       {{-- TODO: вернуть доки <li>
-            <a target="_blank" href="https://github.com/kodeine/laravel-acl/wiki/Validate-Permissions-and-Roles">
-                <i class="metismenu-icon">
-                </i> документация
-            </a>
-        </li>
-        --}}
+        {{-- TODO: вернуть доки <li>
+             <a target="_blank" href="https://github.com/kodeine/laravel-acl/wiki/Validate-Permissions-and-Roles">
+                 <i class="metismenu-icon">
+                 </i> документация
+             </a>
+         </li>
+         --}}
     </ul>
 </li>
 

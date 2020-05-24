@@ -30,7 +30,7 @@
                                     <td>{{$result->percent ?? 'тест не оценен'}}</td>
                                     <td>{{$result->mark ?? 'без оценки'}}</td>
                                     <td>
-                                        @if(empty($result->end_at))
+                                        @if(empty($result->id))
                                             <a class="btn btn-primary" href="{{route('test:next', [$test->id])}}">Начать/Продолжить</a>
                                         @else
                                             ---

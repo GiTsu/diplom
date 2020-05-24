@@ -95,6 +95,47 @@ class TestService
         ])->first();
     }
 
+    public function createNewQuestion(array $fields)
+    {
+        $validationOK = $this->validateByService($fields, [
+            'title' => 'required|unique:tests|max:255',
+            'subject_id' => 'required',
+            'type_id' => 'required',
+            'text' => 'required'
+        ]);
+
+        if ($validationOK) {
+            $model = new Question();
+            $model->fill($fields);
+
+            if ($model->save()) {
+                // если указан спрятанный id теста
+                $testId = !empty($fields['test_id']) ? $fields['test_id'] : null;
+                if ($testId && $test = Test::find($testId)) {
+                    $test->questions()->attach($model);
+                }
+                return $model;
+            }
+
+        }
+        return null;
+    }
+
+    public function updateQuestion(Question $model, array $fields)
+    {
+        $validationOK = $this->validateByService($fields, [
+            'title' => ['required', 'max:255', Rule::unique('questions')->ignore($model->id)],
+            'subject_id' => 'required',
+            //'type_id' => 'required',
+            'text' => 'required'
+        ]);
+        if ($validationOK) {
+            $model->fill($fields);
+            return $model->save();
+        }
+        return false;
+    }
+
     public function createNewTest(array $fields)
     {
 

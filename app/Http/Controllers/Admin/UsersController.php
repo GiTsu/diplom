@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers\FormatHelper;
 use App\Http\Controllers\Controller;
+use App\Models\Group;
 use App\Models\Role;
 use App\Models\Test;
 use App\Services\UserService;
@@ -72,7 +73,8 @@ class UsersController extends Controller
         $user = User::findOrFail($id);
         $availableRoles = FormatHelper::getObjectsCollectionFormSelectData(Role::all(), 'id', 'name');
         $availableTests = FormatHelper::getObjectsCollectionFormSelectData(Test::all(), 'id', 'title');
-        return view('admin.users.show', compact('user', 'availableRoles', 'availableTests'));
+        $availableGroups = FormatHelper::getObjectsCollectionFormSelectData(Group::all(), 'id', 'title');
+        return view('admin.users.show', compact('user', 'availableRoles', 'availableTests', 'availableGroups'));
     }
 
     /**
@@ -129,6 +131,15 @@ class UsersController extends Controller
     {
         if (!$this->userService->addUserRoleById($user, $request->input('role_id'))) {
             return redirect()->back()->withErrors($this->userService->getServiceErrors());
+        }
+        return redirect()->back();
+    }
+
+    public function setGroup(Request $request, User $user)
+    {
+        $user->group_id = $request->input('group_id');
+        if (!$user->save()) {
+            return redirect()->back()->withErrors('Не удалось сменить группу');
         }
         return redirect()->back();
     }

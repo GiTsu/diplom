@@ -22,14 +22,15 @@
                             Текст:
                         </td>
                         <td>
-                            {{$question->text}}
+                            {!! $question->text  !!}
                         </td>
                     </tr>
                 </table>
             </div>
         </div>
         <div class="card-footer">
-            Редактировать Удалить
+            <a href="{{route('questions.edit', $question->id)}}" class="mr-2 mb-2 btn btn-primary">Редактировать</a>
+            Удалить
         </div>
     </div>
 
@@ -87,6 +88,58 @@
         </div>
         <div class="card-footer">
             @widget('AddQuestionItem', ['question'=>$question])
+        </div>
+    </div>
+    <div class="main-card mb-3 card">
+        <div class="card-header">
+            Добавлен к тестам:
+        </div>
+        <div class="card-body">
+            <div>
+                <table class="table">
+                    <tr>
+                        <td>
+                            #
+                        </td>
+                        <td>
+                            название
+                        </td>
+                        <td>
+
+                        </td>
+                    </tr>
+                    @if($question->tests)
+                        @foreach($question->tests as $test)
+                            <tr>
+                                <td>
+                                    {{$test->id}}
+                                </td>
+                                <td>
+                                    <a href="{{route('tests.show', [$test->id])}}" target="_blank">
+                                        {{$test->title}}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{{route('questions:unlink',['questionItem'=>$question->id, 'testId'=>$test->id])}}"
+                                       class="btn btn-danger">
+                                        Отвязать
+                                    </a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
+                </table>
+            </div>
+        </div>
+        <div class="card-footer">
+            @widget('GenericModalWidget', [
+            'modal'=>true,
+            'includeView'=>'widgets.modals.linkQuestionToTest',
+            'buttonTitle'=>'Привязать к тесту',
+            'modalTitle'=>'Привязка к тесту',
+            'testsAvailable'=>$testsAvailable,
+            'question'=>$question,
+            ])
         </div>
     </div>
 @endsection

@@ -55,28 +55,58 @@
         </div>
     </div>
 
-    <div class="main-card mb-3 card">
-        <div class="card-header">
-            Доступ
+    <div class="row">
+        <div class="col">
+            <div class="main-card mb-3 card">
+                <div class="card-header">
+                    Доступ
+                </div>
+                <div class="card-body">
+                    @forelse($roles=$user->getRoles() as $roleSlug)
+                        <div> {{$roleSlug}} <a href="{{route('user:removeRole', [$user->id, $roleSlug])}}">удалить</a>
+                        </div>
+                    @empty
+                        Пользователю не присвоены роли
+                    @endforelse
+                </div>
+                <div class="card-footer">
+                    @widget('GenericModalWidget', [
+                    'modal'=>true,
+                    'includeView'=>'widgets.modals.set_role',
+                    'buttonTitle'=>'Добавить роль',
+                    'modalTitle'=>'Добавление роли',
+                    'user'=>$user,
+                    'availableRoles' => $availableRoles
+                    ])
+                </div>
+            </div>
         </div>
-        <div class="card-body">
-            @forelse($roles=$user->getRoles() as $roleSlug)
-                <div> {{$roleSlug}} <a href="{{route('user:removeRole', [$user->id, $roleSlug])}}">удалить</a></div>
-            @empty
-                Пользователю не присвоены роли
-            @endforelse
-        </div>
-        <div class="card-footer">
-            @widget('GenericModalWidget', [
-            'modal'=>true,
-            'includeView'=>'widgets.modals.set_role',
-            'buttonTitle'=>'Добавить роль',
-            'modalTitle'=>'Добавление роли',
-            'user'=>$user,
-            'availableRoles' => $availableRoles
-            ])
+        <div class="col">
+            <div class="main-card mb-3 card">
+                <div class="card-header">
+                    Учебная группа
+                </div>
+                <div class="card-body">
+                    @if($user->group)
+                        <div> {{$user->group->title}} </div>
+                    @else
+                        Пользователю не присвоена учебная группа
+                    @endif
+                </div>
+                <div class="card-footer">
+                    @widget('GenericModalWidget', [
+                    'modal'=>true,
+                    'includeView'=>'widgets.modals.set_group',
+                    'buttonTitle'=>'Указать группу',
+                    'modalTitle'=>'Выберите учебную группу',
+                    'user'=>$user,
+                    'availableGroups' => $availableGroups
+                    ])
+                </div>
+            </div>
         </div>
     </div>
+
 
     <div class="main-card mb-3 card">
         <div class="card-header">

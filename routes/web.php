@@ -2,6 +2,9 @@
 
 // открытый доступ
 Auth::routes(['register' => false]); //  нет автоматической регистрации
+Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
+    \UniSharp\LaravelFilemanager\Lfm::routes();
+});
 // очистка кеша, реально происходит с параметром ?diplom
 Route::get('/clearcache', function (Request $request) {
     if (!empty(request()) && request()->has('diplom')) {
@@ -46,18 +49,21 @@ Route::group([
     // главная
     Route::get('/', 'DefaultController@index')->name('admin:default:index');
 
+    Route::resource('/groups', 'GroupsController');
+    Route::resource('/subjects', 'SubjectsController');
     // тесты и вопросы
     Route::resource('/tests', 'TestsController');
     Route::get('/tests/evaluate/{result}/result', 'TestsController@showEvaluate')->name('test:showEvaluate');
     Route::put('/tests/evaluate/{result}/result', 'TestsController@putEvaluate')->name('test:putEvaluate');
     Route::resource('/questions', 'QuestionsController');
-    Route::post('/questions/linkTest','QuestionsController@linkTest')->name('question:linkTest');
-
+    Route::post('/questions/linkTest', 'QuestionsController@linkTest')->name('question:linkTest');
 
 
     Route::resource('/questionItems', 'QuestionItemsController');
-    Route::post('/questions/{questionItem}/link','QuestionItemsController@linkQuestions')->name('questions:link');
-    Route::get('/questions/{questionItem}/unlink','QuestionsController@unlinkTest')->name('questions:unlink');
+    Route::post('/questions/{questionItem}/link', 'QuestionItemsController@linkQuestions')->name('questions:link');
+    Route::get('/questions/{questionItem}/unlink', 'QuestionsController@unlinkTest')->name('questions:unlink');
+    Route::post('/question/{question}/assignTest', 'QuestionsController@assignTest')->name('question:assignTest');
+
 
     /* Контроллеры доступа ACL, роли и пермишены */
     // resources
@@ -68,9 +74,10 @@ Route::group([
     // manage user
     Route::post('/user/{user}/setPassword', 'UsersController@setPassword')->name('user:setPassword');
     Route::post('/user/{user}/addRole', 'UsersController@addRole')->name('user:addRole');
+    Route::post('/user/{user}/setGroup', 'UsersController@setGroup')->name('user:setGroup');
+
     Route::get('/user/{user}/removeRole/{slug}', 'UsersController@removeRole')->name('user:removeRole');
     Route::post('/user/{user}/assignTest', 'UsersController@assignTest')->name('user:assignTest');
-
 
     // manage acl
     Route::post('/permission/addslug/{permission}', 'ACL\PermissionController@addSlug')->name('permission:addslug');

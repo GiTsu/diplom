@@ -23,8 +23,17 @@
     =========================================================
     * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
     -->
+    <script src="https://unpkg.com/react@^16/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@^16/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/moment@2.22.1/min/moment.min.js"></script>
+
     <link href="./main.css" rel="stylesheet">
     <script type="text/javascript" src="{{asset('js/jquery-3.5.1.min.js')}}"></script>
+    <!-- laraberg -->
+
+    <link rel="stylesheet" href="{{asset('vendor/laraberg/css/laraberg.css')}}">
+    <script src="{{ asset('vendor/laraberg/js/laraberg.js') }}"></script>
+
 </head>
 <body>
 <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
@@ -103,13 +112,42 @@
                 <div class="app-sidebar__inner">
                     <ul class="vertical-nav-menu">
                         <li class="app-sidebar__heading">Меню</li>
-                        <li>
+
+                        <li class="mm-active">
+                            <a href="#">
+                                <i class="metismenu-icon pe-7s-bell"></i>
+                                Администрирование
+                                <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                            </a>
+                            <ul>
+                                <li>
+                                    <a href="{{route('subjects.index')}}">
+                                        <i class="metismenu-icon">
+                                        </i> Предметы
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{route('groups.index')}}">
+                                        <i class="metismenu-icon">
+                                        </i> Группы
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="mm-active">
                             <a href="#">
                                 <i class="metismenu-icon pe-7s-display2"></i>
                                 Тесты
                                 <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                             </a>
                             <ul>
+                                <li>
+                                    <a href="{{route('questions.index')}}">
+                                        <i class="metismenu-icon">
+                                        </i>Вопросы
+                                    </a>
+                                </li>
                                 <li>
                                     <a href="{{route('tests.index')}}">
                                         <i class="metismenu-icon"></i>
@@ -119,12 +157,12 @@
                                 <li>
                                     <a href="{{route('questions.index')}}">
                                         <i class="metismenu-icon">
-                                        </i>Вопросы
+                                        </i>Результаты
                                     </a>
                                 </li>
                             </ul>
                         </li>
-                        <li>
+                        <li class="mm-active">
                             <a href="#">
                                 <i class="metismenu-icon pe-7s-mouse"></i>
                                 Пользователи
@@ -193,7 +231,6 @@
                 </div>
             </div>
         </div>
-        <script src="http://maps.google.com/maps/api/js?sensor=true"></script>
     </div>
 
     @stack('modalDen')
@@ -201,6 +238,7 @@
 </div>
 
 <script type="text/javascript" src="./assets/scripts/main.js"></script>
+
 
 </body>
 </html>

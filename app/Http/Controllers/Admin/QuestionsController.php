@@ -5,16 +5,34 @@ namespace App\Http\Controllers\Admin;
 use App\Helpers\FormatHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Question;
+use App\Models\Subject;
 use App\Models\Test;
+use App\Services\TestService;
 use Illuminate\Http\Request;
 
 class QuestionsController extends Controller
 {
+    private $testService;
+
+    public function __construct(TestService $testService)
+    {
+        $this->testService = $testService;
+    }
+
     public function unlinkTest(Request $request, $questionItem)
     {
         $question = Question::query()->findOrFail($questionItem);
-        $test = Test::query()->findOrFail($request->input('testId'));
+        $test = Test::query()->findOrFail($request->input('testId')); // TODO: именование параметров к одному виду
         $test->questions()->detach($question);
+        return redirect()->back();
+    }
+
+    public function assignTest(Request $request, $question)
+    {
+        $question = Question::query()->findOrFail($question);
+        $test = Test::query()->findOrFail($request->input('test_id')); // TODO: именование параметров к одному виду
+        // TODO: проверка на повторную привязку
+        $test->questions()->attach($question);
         return redirect()->back();
     }
 
@@ -37,10 +55,12 @@ class QuestionsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $questions = Question::paginate(20);
-        return view('admin.questions.index', compact('questions'));
+        $questions = Question::filter($request->all())->paginate(20);
+        $questionTypes = Question::getTypes();
+        $subjects = FormatHelper::getObjectsCollectionFormSelectData(Subject::all(), 'id', 'title');
+        return view('admin.questions.index', compact('questions', 'questionTypes', 'subjects'));
     }
 
     /**
@@ -51,7 +71,8 @@ class QuestionsController extends Controller
     public function create()
     {
         $questionTypes = Question::getTypes();
-        return view('admin.questions.create', compact('questionTypes'));
+        $subjects = FormatHelper::getObjectsCollectionFormSelectData(Subject::all(), 'id', 'title');
+        return view('admin.questions.create', compact('questionTypes', 'subjects'));
     }
 
     /**
@@ -62,24 +83,13 @@ class QuestionsController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'title' => 'required|unique:tests|max:255',
-            'type_id' => 'required',
-            'text' => 'required'
-        ]);
-
-        //dd($validatedData);
-        $model = new Question();
-        $model->fill($request->all());
-        $model->save();
-
-        // если указан спрятанный id теста
-        $testId = $request->input('test_id');
-        if ($testId && $test = Test::find($testId)) {
-            $test->questions()->attach($model);
+        // TODO: ссаный гутенберг шлет какой-то левый запрос в стиле вордпресса и ломает перенаправление назад ->back()
+        $newQuestion = $this->testService->createNewQuestion($request->all());
+        if (!$newQuestion) {
+            return redirect()->route('questions.create')->withInput($request->all())->withErrors($this->testService->getServiceErrors());
         }
 
-        return redirect()->back();
+        return redirect()->route('questions.index');
     }
 
     /**
@@ -92,12 +102,13 @@ class QuestionsController extends Controller
     {
         $question = Question::findOrFail($id);
         $qTypes = Question::getTypes();
+        $testsAvailable = FormatHelper::getObjectsCollectionFormSelectData(Test::all(), 'id', 'title');
         $filteredList = $question->questionItems->filter(function ($value, $key) {
             return empty($value->linked_id);
         });
 
         $linkAvailable = FormatHelper::getObjectsCollectionFormSelectData($filteredList, 'id', 'text');
-        return view('admin.questions.show', compact('question', 'qTypes', 'linkAvailable'));
+        return view('admin.questions.show', compact('question', 'qTypes', 'linkAvailable', 'testsAvailable'));
     }
 
     /**
@@ -108,7 +119,10 @@ class QuestionsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $question = Question::query()->findOrFail($id);
+        $questionTypes = Question::getTypes();
+        $subjects = FormatHelper::getObjectsCollectionFormSelectData(Subject::all(), 'id', 'title');
+        return view('admin.questions.edit', compact('question', 'questionTypes', 'subjects'));
     }
 
     /**
@@ -120,7 +134,13 @@ class QuestionsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $question = Question::query()->findOrFail($id);
+        if (!$this->testService->updateQuestion($question, $request->all())) {
+            return redirect()
+                ->route('questions.update', [$question->id])
+                ->withInput($request->all())->withErrors($this->testService->getServiceErrors());
+        }
+        return redirect()->route('questions.show', [$question->id]);
     }
 
     /**
