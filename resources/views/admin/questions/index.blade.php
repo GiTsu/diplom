@@ -7,10 +7,21 @@
             {{Form::open(['method'=>'GET'])}}
             <div class="card my-2">
                 <div class="card-body">
-                    <div class="form-group">
-                        {{Form::label('subject_id', 'Предмет')}}
-                        {{Form::select('subject_id', $subjects, request('subject_id'), ['class'=>'form-control', 'placeholder'=>''])}}
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                {{Form::label('subject_id', 'Предмет')}}
+                                {{Form::select('subject_id', $subjects, request('subject_id'), ['class'=>'form-control', 'placeholder'=>''])}}
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                {{Form::label('type_id', 'Тип ответа')}}
+                                {{Form::select('type_id', $questionTypes, request('type_id'), ['class'=>'form-control', 'placeholder'=>''])}}
+                            </div>
+                        </div>
                     </div>
+
                 </div>
                 <div class="card-footer">
                     {{Form::submit()}}
@@ -25,9 +36,9 @@
         <thead>
         <tr>
             <th>#</th>
-            <th>Тип</th>
-            <th>Предмет</th>
             <th>Название</th>
+            <th>Предмет</th>
+            <th>Тип</th>
             <th>Ответов</th>
             <th></th>
         </tr>
@@ -37,14 +48,14 @@
         @foreach ($questions as $question)
             <tr>
                 <th scope="row">{{$question->id}}</th>
-                <td>{{$questionTypes[$question->type_id] ?? 'не существует'}}</td>
-                <td>{{$question->subject->title ?? 'не указан'}}</td>
                 <td>
-                    <a href="{{route('questions.show', ['question'=>$question->id])}}">
+                    <a href="{{route('questions.show', ['question'=>$question->id])}}" target="_blank">
                         {{$question->title}}
                     </a>
                 </td>
-                <td>0</td>
+                <td>{{$question->subject->title ?? 'не указан'}}</td>
+                <td>{{$questionTypes[$question->type_id] ?? 'не существует'}}</td>
+                <td>{{$question->questionItems->count()}}</td>
             </tr>
         @endforeach
         </tbody>

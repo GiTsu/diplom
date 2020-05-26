@@ -30,7 +30,9 @@
         </div>
         <div class="card-footer">
             <a href="{{route('questions.edit', $question->id)}}" class="mr-2 mb-2 btn btn-primary">Редактировать</a>
-            Удалить
+            {{Form::open(['route'=>['questions.destroy', $question->id], 'method'=>'delete'])}}
+            {{Form::submit('Удалить',['class'=>'btn btn-danger mr-2 mb-2'])}}
+            {{Form::close()}}
         </div>
     </div>
 

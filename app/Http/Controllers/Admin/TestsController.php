@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers\FormatHelper;
 use App\Http\Controllers\Controller;
+use App\Models\Group;
 use App\Models\Question;
 use App\Models\Result;
+use App\Models\Subject;
 use App\Models\Test;
 use App\Services\TestService;
 use Illuminate\Http\Request;
@@ -79,7 +81,9 @@ class TestsController extends Controller
         $test = Test::with('creator')->findOrFail($id);
         $questionTypes = Question::getTypes();
         $selectQuestions = FormatHelper::getObjectsCollectionFormSelectData(Question::all(), 'id', 'title');
-        return view('admin.tests.show', compact('test', 'questionTypes', 'selectQuestions'));
+        $subjects = FormatHelper::getObjectsCollectionFormSelectData(Subject::all(), 'id', 'title');
+        $groups = FormatHelper::getObjectsCollectionFormSelectData(Group::all(), 'id', 'title');
+        return view('admin.tests.show', compact('test', 'questionTypes', 'selectQuestions', 'subjects', 'groups'));
     }
 
     /**

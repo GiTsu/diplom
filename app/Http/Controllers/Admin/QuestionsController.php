@@ -89,7 +89,7 @@ class QuestionsController extends Controller
             return redirect()->route('questions.create')->withInput($request->all())->withErrors($this->testService->getServiceErrors());
         }
 
-        return redirect()->route('questions.index');
+        return redirect()->route('questions.show', [$newQuestion->id]);
     }
 
     /**
@@ -151,6 +151,8 @@ class QuestionsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $question = Question::query()->findOrFail($id);
+        $question->delete();
+        return redirect()->route('questions.index');
     }
 }

@@ -54,10 +54,20 @@
             </div>
         </div>
         <div class="card-footer">
+
+            @widget('GenericModalWidget', [
+            'modal'=>true,
+            'includeView'=>'admin.tests.assign_group',
+            'buttonTitle'=>'Задать тест учащимся',
+            'modalTitle'=>'Кому выполнить тест',
+            'test'=>$test,
+            'groups'=>$groups,
+            ])
             <a href="{{route('tests.edit', [$test->id])}}" class="btn btn-primary mr-2 mb-2">Редактировать</a>
             {{Form::open(['route' => ['tests.destroy', $test->id], 'method'=>'delete'])}}
             {{Form::submit('Удалить', ['class'=>'btn btn-danger mr-2 mb-2'])}}
             {{Form::close()}}
+
         </div>
     </div>
 
@@ -97,7 +107,8 @@
             'buttonTitle'=>'Добавить вопрос',
             'modalTitle'=>'Добавление вопроса',
             'test'=>$test,
-            'questionTypes'=>$questionTypes
+            'questionTypes'=>$questionTypes,
+            'subjects'=>$subjects
             ])
             @widget('GenericModalWidget', [
             'modal'=>true,

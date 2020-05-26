@@ -19,6 +19,7 @@
                     <small class="form-text text-muted">краткое описание</small>
                 </div>
                 <button type="submit" class="btn btn-primary">Сохранить</button>
+                {{Form::close()}}
             </div>
         </div>
     </div>

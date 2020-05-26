@@ -82,11 +82,18 @@ class UserService
             'name' => ['required'],
             'email' => ['required', 'email'],
         ])) {
+            $user->fill($fields);
             if ($user->save()) {
                 return true;
             }
         }
         return false;
+    }
+
+    public function destroyUser(User $user)
+    {
+        // TODO: внедрить проверки и подчистку базы
+        return $user->delete();
     }
 
     /**
@@ -103,7 +110,7 @@ class UserService
             $roles = $user->getRoles();
             // новый код проверки
             if ($roles) {
-                $this->addServiceError('У пользователя уже есть роль, сначала удалите ее', ['role'=>$roles]);
+                $this->addServiceError('У пользователя уже есть роль, сначала удалите ее', ['role' => $roles]);
                 return false;
             }
             // новый код проверки

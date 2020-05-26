@@ -32,7 +32,7 @@ Route::group([
 ], function () {
     Route::get('/', 'HomeController@index')->name('site:index');
     Route::get('/home', 'HomeController@home')->name('home');
-    Route::get('/examTest/{test}/', 'HomeController@examTest')->name('test:next');
+    Route::get('/examTest/{result}/', 'HomeController@examTest')->name('test:next');
     Route::post('/answerTest/{result}/', 'HomeController@examTestAnswer')->name('test:answer');
 });
 
@@ -44,12 +44,19 @@ Route::group([
     'prefix' => '/admin',
     'namespace' => 'Admin',
     'middleware' => ['auth', 'acl'],
-    'is' => 'teacher',
+    'is' => 'teacher|admin',
 ], function () {
     // главная
     Route::get('/', 'DefaultController@index')->name('admin:default:index');
 
+    Route::get('/results', 'ResultsController@index')->name('admin:results:index');
+    Route::post('/results/test/{test}/assignGroup', 'ResultsController@assignToGroup')->name('admin:results:assignToGroup');
+
+
+
     Route::resource('/groups', 'GroupsController');
+    Route::get('/groups/dismiss/{user}', 'GroupsController@dismiss')->name('admin:groups:dismiss');
+
     Route::resource('/subjects', 'SubjectsController');
     // тесты и вопросы
     Route::resource('/tests', 'TestsController');

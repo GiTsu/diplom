@@ -21,7 +21,7 @@
                                     <div class="font-weight-bold mb-2">Вопрос:</div>
                                     <div class="alert alert-light">
                                         <div class="font-weight-bold">{{$answer->question->title}}</div>
-                                        {{$answer->question->text}}
+                                        {!! $answer->question->text !!}
                                     </div>
                                 </div>
                                 <div>
@@ -30,7 +30,15 @@
                                         {{--вывод согласно типу вопроса--}}
                                         @switch($answer->question->type_id)
                                             @case(\App\Models\Question::SINGLE_QUESTION)
-                                            один {{$answer->questionItem->text}}
+                                            @php
+                                                $item = \App\Models\QuestionItem::query()->whereIn('id', [$answer->value])->each(
+                                                    function($value, $key){
+                                                        //$json= json_decode();
+                                                        echo('<div>'.$value->text.'</div>');
+                                                    }
+                                                );
+                                            @endphp
+
                                             @break
                                             @case(\App\Models\Question::MULTI_QUESTION)
                                             @php

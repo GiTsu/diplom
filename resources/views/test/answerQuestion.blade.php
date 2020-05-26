@@ -5,10 +5,11 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">{{$question->title}}</div>
+                    <div class="card-header">{{$question->title}} (id#{{$question->id}})</div>
                     <div class="card-body">
                         <div class="alert alert-light">
-                            Вопрос: {{$question->text}} (id#{{$question->id}})
+                            <div class="font-weight-bold">Вопрос:</div>
+                            <div class="alert alert-light">{!! $question->text  !!}</div>
                         </div>
                         @if($question->questionItems->isNotEmpty() || ($question->type_id==\App\Models\Question::ENTER_QUESTION))
                             {{Form::open(['route' => ['test:answer', $result->id], 'method' => 'post']) }}
@@ -43,7 +44,7 @@
 
                                                 {{ Form::checkbox('value[]', $qItem->id, (!empty($answerItem) && in_array($qItem->id, json_decode($answerItem->value))),  ['id' => 'answer_'.$qItem->id]) }}
                                             @else
-                                                {{ Form::radio('value', (!empty($answerItem) && ($qItem->id==$answerItem->value)),  ['id' => 'answer']) }}
+                                                {{ Form::radio('value', $qItem->id, (!empty($answerItem) && ($qItem->id==$answerItem->value)),  ['id' => 'answer']) }}
                                             @endif
                                             {{$qItem->text}}
                                         </div>
@@ -52,13 +53,13 @@
                             @endif
                             @if(($question->type_id==\App\Models\Question::ENTER_QUESTION))
                                 {{-- ввод ручками--}}
-                                <div class="alert alert-info">
+                                <div class="alert alert-secondary">
                                     {{ Form::textarea('value', $answerItem->value ?? null,  ['id' => 'answer']) }}
                                 </div>
                             @endif
 
-                            <div class="alert alert-success">
-                                {{ Form::submit('Ответить', ['class' => 'form-control'])}}
+                            <div class="alert alert-dark">
+                                {{ Form::submit('Ответить', ['class' => 'btn btn-block btn-success font-weight-bold'])}}
                             </div>
 
                             {{Form::close()}}
@@ -71,18 +72,20 @@
                     </div>
                     <div class="card-footer">
                         <div class="my-2">
+                            <h5>Информация и действия</h5>
                             <ul>
                                 <li>
                                     Тест начат: {{$result->start_at}}
-                                    @if(!empty($test->opt_timelimit))
-                                        Ограничение по времени: {{$result->start_at->addMinutes($test->opt_timelimit)}}
+                                    @if(!empty($result->test->opt_timelimit))
+                                        Ограничение по
+                                        времени: {{$result->start_at->addMinutes($result->test->opt_timelimit)}}
                                     @else
                                         Тест не ограничен по времени
                                     @endif
                                 </li>
                                 <li>
                                     возврат по вопросам
-                                    @if(!empty($test->opt_return))
+                                    @if(!empty($result->test->opt_return))
                                         разрешен
                                     @else
                                         запрещен
@@ -90,30 +93,31 @@
                                 </li>
                                 <li>
                                     пропускать вопросы
-                                    @if(!empty($test->opt_skip))
+                                    @if(!empty($result->test->opt_skip))
                                         можно
                                     @else
                                         нельзя
                                     @endif
                                 </li>
                                 <li>
-                                    @if(!empty($test->opt_fullonly))
+                                    @if(!empty($result->test->opt_fullonly))
                                         завершить тест можно только после ответа на все вопросы
                                     @endif
                                 </li>
                             </ul>
                         </div>
-                        <div>
-                            <a class="btn btn-primary"
-                               href="{{route('test:next',['test'=>$test->id, 'goPrevious'=>$question->id])}}">
+                        <div class="alert alert-light">
+
+                            <a class="btn btn-outline-secondary"
+                               href="{{route('test:next',['result'=>$result->id, 'goPrevious'=>$question->id])}}">
                                 Предыдущий вопрос
                             </a>
-                            <a class="btn btn-success"
-                               href="{{route('test:next',['test'=>$test->id, 'goNext'=>$question->id])}}">
+                            <a class="btn btn-outline-secondary"
+                               href="{{route('test:next',['result'=>$result->id, 'goNext'=>$question->id])}}">
                                 Следующий вопрос
                             </a>
-                            <a class="btn btn-warning"
-                               href="{{route('test:next',['test'=>$test->id, 'finish'=>true])}}">
+                            <a class="btn btn-outline-danger"
+                               href="{{route('test:next',['result'=>$result->id, 'finish'=>true])}}">
                                 Завершить тест
                             </a>
                         </div>

@@ -31,8 +31,17 @@ class TestService
 
     }
 
-    public function canDoTest(User $user, Test $test)
+    public function canDoTest(User $user, Result $result)
     {
+        return true;
+    }
+
+    public function startTestResult(Result $result)
+    {
+        if (empty($result->start_at)) {
+            $result->start_at = Carbon::now();
+            return $result->save();
+        }
         return true;
     }
 
@@ -84,6 +93,17 @@ class TestService
             ]);
             $userResult->save();
         }
+        return $userResult;
+    }
+
+    public function assignTestResultToUser(User $user, Test $test)
+    {
+        $userResult = new Result();
+        $userResult->fill([
+            'test_id' => $test->id,
+            'user_id' => $user->id,
+        ]);
+        $userResult->save();
         return $userResult;
     }
 

@@ -106,38 +106,4 @@
             </div>
         </div>
     </div>
-
-
-    <div class="main-card mb-3 card">
-        <div class="card-header">
-            Тесты
-        </div>
-        <div class="card-body">
-            @forelse($user->tests as $test)
-                @php
-                    $resultItem = $test->results()->where('user_id', $user->id)->first();
-                @endphp
-                <div>
-                    <a href="{{route('tests.show', [$test->id])}}">{{$test->title}}</a>
-                    @if($resultItem)
-                        <a class="btn btn-warning" href="{{route('test:showEvaluate', [$resultItem->id])}}">Оценить</a>
-                    @else
-                        у теста нет результата
-                    @endif
-                </div>
-            @empty
-                У пользователя нет тестов
-            @endforelse
-        </div>
-        <div class="card-footer">
-            @widget('GenericModalWidget', [
-            'modal'=>true,
-            'includeView'=>'widgets.modals.assign_test',
-            'buttonTitle'=>'Добавить тест',
-            'modalTitle'=>'Добавление теста пользователю',
-            'user'=>$user,
-            'availableTests' => $availableTests
-            ])
-        </div>
-    </div>
 @endsection

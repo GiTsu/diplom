@@ -10,6 +10,7 @@
             <th>Имя</th>
             <th>Имейл</th>
             <th>Роль</th>
+            <th>Группа</th>
         </tr>
         </thead>
         <tbody>
@@ -29,6 +30,9 @@
                     /** @var $user \App\User */
                     ?>
                     {{implode(',',$user->getRoles())}}
+                </td>
+                <td>
+                    {{$user->group->title ?? 'не указана'}}
                 </td>
             </tr>
         @endforeach

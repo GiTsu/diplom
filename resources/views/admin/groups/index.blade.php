@@ -8,6 +8,7 @@
         <tr>
             <th>#</th>
             <th>Название</th>
+            <th>Человек</th>
             <th></th>
         </tr>
         </thead>
@@ -17,7 +18,12 @@
             <tr>
                 <th scope="row">{{$group->id}}</th>
                 <td>
-                    {{$group->title}}
+                    <a href="{{route('groups.show', [$group->id])}}">
+                        {{$group->title}}
+                    </a>
+                </td>
+                <td>
+                    {{$group->students->count()}}
                 </td>
                 <th>
                     {{Form::open(['route'=>['groups.destroy', $group->id], 'method'=>'delete'])}}

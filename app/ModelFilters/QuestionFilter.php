@@ -7,11 +7,11 @@ use EloquentFilter\ModelFilter;
 class QuestionFilter extends ModelFilter
 {
     /**
-    * Related Models that have ModelFilters as well as the method on the ModelFilter
-    * As [relationMethod => [input_key1, input_key2]].
-    *
-    * @var array
-    */
+     * Related Models that have ModelFilters as well as the method on the ModelFilter
+     * As [relationMethod => [input_key1, input_key2]].
+     *
+     * @var array
+     */
     public $relations = [];
     //
     protected $blacklist = [];
@@ -19,6 +19,11 @@ class QuestionFilter extends ModelFilter
     public function subject($id)
     {
         return $this->where('subject_id', $id);
+    }
+
+    public function type($id)
+    {
+        return $this->where('type_id', $id);
     }
 
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Group;
+use App\User;
 use Illuminate\Http\Request;
 
 class GroupsController extends Controller
@@ -58,7 +59,7 @@ class GroupsController extends Controller
      */
     public function show(Group $group)
     {
-        //
+        return view('admin.groups.show', compact('group'));
     }
 
     /**
@@ -94,5 +95,12 @@ class GroupsController extends Controller
     {
         $group->delete();
         return redirect()->route('groups.index');
+    }
+
+    public function dismiss(Request $request, User $user)
+    {
+        $user->group_id = null;
+        $user->save();
+        return redirect()->back();
     }
 }

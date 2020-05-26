@@ -61,7 +61,7 @@
                                 <a class="dropdown-item" href="{{ route('site:index') }}">
                                     Личный кабинет
                                 </a>
-                                @if(Auth::user()->hasRole('teacher'))
+                                @if(Auth::user()->hasRole('teacher|admin'))
                                     <a class="dropdown-item" href="{{ route('admin:default:index') }}">
                                         Админ-панель
                                     </a>

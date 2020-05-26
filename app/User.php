@@ -6,13 +6,14 @@ use App\Models\AnswerItem;
 use App\Models\Group;
 use App\Models\Result;
 use App\Models\Test;
+use EloquentFilter\Filterable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Kodeine\Acl\Traits\HasRole;
 
 class User extends Authenticatable
 {
-    use Notifiable, HasRole;
+    use Notifiable, HasRole, Filterable;
 
     /**
      * The attributes that are mass assignable.
@@ -44,11 +45,6 @@ class User extends Authenticatable
     public function group()
     {
         return $this->belongsTo(Group::class);
-    }
-
-    public function tests()
-    {
-        return $this->belongsToMany(Test::class, 'rel_users_tests');
     }
 
     public function answers()

@@ -5,7 +5,7 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">Доступные тесты</div>
+                    <div class="card-header">Назначенные прохождения тестов</div>
                     <div class="card-body">
                         <table class="table">
                             <tr>
@@ -18,20 +18,17 @@
                                 <th></th>
                             </tr>
 
-                            @forelse($user->tests as $test)
-                                @php
-                                    $result = $user->results()->where('test_id','=',$test->id)->first();
-                                @endphp
+                            @forelse($user->results as $result)
                                 <tr>
-                                    <td>{{$test->id}}</td>
-                                    <td>{{$test->title}}</td>
+                                    <td>{{$result->test->id}}</td>
+                                    <td>{{$result->test->title}}</td>
                                     <td>{{$result->start_at ?? 'не начинался'}}</td>
                                     <td>{{$result->end_at ?? 'не закончен'}}</td>
                                     <td>{{$result->percent ?? 'тест не оценен'}}</td>
                                     <td>{{$result->mark ?? 'без оценки'}}</td>
                                     <td>
-                                        @if(empty($result->id))
-                                            <a class="btn btn-primary" href="{{route('test:next', [$test->id])}}">Начать/Продолжить</a>
+                                        @if(empty($result->end_at))
+                                            <a class="btn btn-primary" href="{{route('test:next', [$result->id])}}">Начать/Продолжить</a>
                                         @else
                                             ---
                                         @endif

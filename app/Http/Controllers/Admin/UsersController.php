@@ -113,8 +113,8 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        // TODO: реализовать удаление пользователя
-        return redirect()->back();
+        $this->userService->destroyUser(User::query()->findOrFail($id));
+        return redirect()->route('user.index');
 
     }
 
