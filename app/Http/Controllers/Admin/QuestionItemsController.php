@@ -5,10 +5,18 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Question;
 use App\Models\QuestionItem;
+use App\Services\TestService;
 use Illuminate\Http\Request;
 
 class QuestionItemsController extends Controller
 {
+    private $testService;
+
+    public function __construct(TestService $testService)
+    {
+        $this->testService = $testService;
+    }
+
     public function linkQuestions(Request $request, QuestionItem $questionItem)
     {
         $linkId = $request->input('linked_id', null);
@@ -17,6 +25,14 @@ class QuestionItemsController extends Controller
         $questionItem->save();
         //}
 
+        return redirect()->back();
+    }
+
+    public function toggleCorrect(Request $request, QuestionItem $questionItem)
+    {
+        if (!$this->testService->toggleQuestionItemCorrect($questionItem)) {
+            return redirect()->back()->withErrors($this->testService->getServiceErrors());
+        }
         return redirect()->back();
     }
 

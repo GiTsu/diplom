@@ -22,7 +22,7 @@ class ResultsController extends Controller
 
     public function index(Request $request)
     {
-        $results = Result::filter($request->all())->paginate(50);
+        $results = Result::filter($request->all())->orderBy('id', 'desc')->paginate(50);
         $tests = FormatHelper::getObjectsCollectionFormSelectData(Test::all(), 'id', 'title');
         $groups = FormatHelper::getObjectsCollectionFormSelectData(Group::all(), 'id', 'title');
         $marks = Result::getMarkArr();
@@ -38,6 +38,12 @@ class ResultsController extends Controller
                 $this->testService->assignTestResultToUser($user, $test);
             }
         }
+        return redirect()->back();
+    }
+
+    public function assignToUser(Request $request, User $user, Test $test)
+    {
+        $this->testService->assignTestResultToUser($user, $test);
         return redirect()->back();
     }
 }

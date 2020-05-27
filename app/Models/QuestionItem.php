@@ -11,6 +11,7 @@ class QuestionItem extends Model
 
     public function question()
     {
+        // TODO: ошибка проектирования - один ответ только одному вопросу.
         return $this->belongsToMany(Question::class, 'rel_questions_items');
     }
 }

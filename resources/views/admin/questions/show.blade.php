@@ -58,10 +58,11 @@
                 @forelse($question->questionItems as $questionItem)
                     <tr>
                         <td>
-                            @if($question->type_id!=\App\Models\Question::COMPLY_QUESTION)
-                                <span class="badge badge-{{$questionItem->is_correct?'success':'warning'}}">
-                                {{$questionItem->is_correct?'Да':'Нет'}}
-                            </span>
+                            @if(in_array($question->type_id,[\App\Models\Question::SINGLE_QUESTION,\App\Models\Question::MULTI_QUESTION]))
+                                <a href="{{route('admin:questionItems:toggle',[$questionItem->id])}}"
+                                   class="badge badge-{{$questionItem->is_correct?'success':'warning'}}">
+                                    {{$questionItem->is_correct?'Да':'Нет'}}
+                                </a>
                             @else
                                 ---
                             @endif

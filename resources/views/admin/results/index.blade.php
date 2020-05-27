@@ -74,6 +74,7 @@
                 </td>
                 <td>
                     @if(!empty($result->mark))
+                        <a href="{{route('admin:results:retest', [$result->user_id, $result->test_id])}}" class="btn btn-sm btn-outline-success">задать снова</a>
                         {{$marks[$result->mark]}}, {{$result->percent}}%
                     @else
                         @if (!empty($result->end_at))

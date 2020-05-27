@@ -51,7 +51,7 @@ Route::group([
 
     Route::get('/results', 'ResultsController@index')->name('admin:results:index');
     Route::post('/results/test/{test}/assignGroup', 'ResultsController@assignToGroup')->name('admin:results:assignToGroup');
-
+    Route::get('/results/user/{user}/assignTest/{test}', 'ResultsController@assignToUser')->name('admin:results:retest');
 
 
     Route::resource('/groups', 'GroupsController');
@@ -67,9 +67,13 @@ Route::group([
 
 
     Route::resource('/questionItems', 'QuestionItemsController');
+    Route::get('/questionItems/{questionItem}/toggle', 'QuestionItemsController@toggleCorrect')->name('admin:questionItems:toggle');
+
     Route::post('/questions/{questionItem}/link', 'QuestionItemsController@linkQuestions')->name('questions:link');
     Route::get('/questions/{questionItem}/unlink', 'QuestionsController@unlinkTest')->name('questions:unlink');
     Route::post('/question/{question}/assignTest', 'QuestionsController@assignTest')->name('question:assignTest');
+
+
 
 
     /* Контроллеры доступа ACL, роли и пермишены */

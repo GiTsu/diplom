@@ -10,6 +10,7 @@ namespace App\Services;
 
 use App\Models\AnswerItem;
 use App\Models\Question;
+use App\Models\QuestionItem;
 use App\Models\Result;
 use App\Models\Test;
 use App\Services\Traits\ServiceCountersTrait;
@@ -208,6 +209,21 @@ class TestService
         } catch (\Throwable $e) {
             $this->addServiceError('Не удалось удалить тест', []);
         }
+        return false;
+    }
+
+    public function toggleQuestionItemCorrect(QuestionItem $model)
+    {
+        if (in_array($model->question[0]->type_id, [Question::SINGLE_QUESTION, Question::MULTI_QUESTION])) {
+            // TODO: ошибка проектирования
+            if ($model->question[0]->type_id == Question::SINGLE_QUESTION) {
+                // сбросить остальные в неправильных
+                $model->question[0]->questionItems()->update(['is_correct' => null]);
+            }
+            $model->is_correct = (!empty($model->is_correct)) ? null : 1;
+            return $model->save();
+        }
+        $this->addServiceError('Этот тип не поддерживает флаг правильности');
         return false;
     }
 }
