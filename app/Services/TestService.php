@@ -32,6 +32,69 @@ class TestService
 
     }
 
+    public static function checkCorrect(AnswerItem $answer)
+    {
+        $question = $answer->question;
+        $questionItems = $question->questionItems;
+
+        if (empty($answer->value) && ($question->type_id != Question::ENTER_QUESTION)) {
+            return false;
+        }
+
+        $correct = null;
+
+        switch ($question->type_id) {
+            case Question::SINGLE_QUESTION:
+                $correct = false;
+                if ($questionItems) {
+                    foreach ($questionItems as $qi) {
+                        if (($qi->id == $answer->value) && (!empty($qi->is_correct))) {
+                            $correct = true;
+                        }
+                    }
+                }
+                break;
+            case Question::MULTI_QUESTION:
+                $correctAnswers = json_decode($answer->value);
+                //dd($correctAnswers);
+                //dd($answer->getAttributes(), $questionItems);
+                $correct = true;
+                if ($questionItems) {
+                    foreach ($questionItems as $qi) {
+                        if (!empty($qi->is_correct) && !in_array($qi->id, $correctAnswers)) {
+                            $correct = false;
+                        }
+                    }
+                }
+                break;
+
+            case Question::COMPLY_QUESTION:
+                $correctAnswers = json_decode($answer->value, true);
+                //dd($correctAnswers);
+                //dd($answer->getAttributes(), $questionItems);
+                $correct = true;
+                if ($questionItems) {
+                    foreach ($questionItems as $qi) {
+                        if (!empty($qi->linked_id)) {
+                            if (empty($correctAnswers[$qi->id])) {
+                                $correct = false;
+                            } elseif ($correctAnswers[$qi->id] != $qi->linked_id) {
+                                $correct = false;
+                            }
+                            //if (empty($correctAnswers[$qi->id]) )
+                            //dd($correctAnswers, $qi->id, $qi->linked_id);
+                            //$correct = false;
+                        }
+                    }
+                }
+                break;
+            case Question::ENTER_QUESTION:
+                $correct = null;
+                break;
+        }
+        return $correct;
+    }
+
     public function canDoTest(User $user, Result $result)
     {
         return true;

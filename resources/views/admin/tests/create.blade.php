@@ -42,7 +42,7 @@
                     </div>
 
                     <div class="form-group form-check">
-                        {{Form::checkbox('opt_notime', 1,null,  ['class'=>'form-check-input'])}}
+                        {{Form::checkbox('opt_notime', 1, true,  ['class'=>'form-check-input'])}}
                         {{Form::label('opt_notime', 'Без ограничений по времени', ['class'=>'form-check-label'])}}
                     </div>
 

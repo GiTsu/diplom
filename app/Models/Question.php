@@ -22,7 +22,7 @@ class Question extends Model
             self::SINGLE_QUESTION => 'Правильный вариант',
             self::MULTI_QUESTION => 'Несколько правильных вариантов',
             self::ENTER_QUESTION => 'Ввод текста ответа',
-            self::COMPLY_QUESTION => 'выбор соответствия',
+            self::COMPLY_QUESTION => 'Выбор соответствия',
         ];
     }
 

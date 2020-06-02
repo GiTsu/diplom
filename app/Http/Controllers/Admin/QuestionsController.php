@@ -152,7 +152,11 @@ class QuestionsController extends Controller
     public function destroy($id)
     {
         $question = Question::query()->findOrFail($id);
-        $question->delete();
+        try {
+            $question->delete();
+        } catch (\Throwable $e) {
+            return redirect()->back()->withErrors('Не удалось удалить вопрос - отвяжите его от тестов');
+        }
         return redirect()->route('questions.index');
     }
 }

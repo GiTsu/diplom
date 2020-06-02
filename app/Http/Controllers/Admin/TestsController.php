@@ -24,15 +24,27 @@ class TestsController extends Controller
     public function showEvaluate(Result $result)
     {
         $markArr = Result::getMarkArr();
-        return view('admin.tests.evaluate', compact('result', 'markArr'));
+        $questionsCount = $result->test->questions->count();
+        $questionsCorrectCount = 0;
+        return view('admin.tests.evaluate', compact('result', 'markArr', 'questionsCount', 'questionsCorrectCount'));
     }
 
     public function putEvaluate(Request $request, Result $result)
     {
+        $markedQuestions = $request->input('marked_questions');
+        $answersCount = $result->answers->count();
+        if ($answersCount != $markedQuestions) {
+            return redirect()->back()->withErrors('Не все вопросы оценены');
+        }
+
         $result->percent = str_replace('%', '', $request->input('percent'));
         $result->mark = $request->input('mark');
+        if (empty($result->mark)) {
+            return redirect()->back()->withErrors('Оценка не указана');
+        }
+
         $result->save();
-        return redirect()->back();
+        return redirect()->route('admin:results:index');
     }
 
     /**
