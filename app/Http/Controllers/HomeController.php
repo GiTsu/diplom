@@ -50,44 +50,44 @@ class HomeController extends Controller
         $goPrevious = $request->input('goPrevious');
         $goNext = $request->input('goNext');
         $finish = $request->input('finish');
+        $finishMessage = '';
         $user = \Auth::user();
         if ($this->testService->canDoTest($user, $result)) {
-            // посчитать количество отвеченных вопросов
-            // если ноль - начать тест
-            // если в середине - выдать вопрос
-            // если кончились вопросы или время - завешить тест
-            // TODO: попилить в сервис
-
-
-            // считываем запись результата или создаем
-            //$result = $this->testService->getUserTestResultRecord($user, $test);
             // установить start_at
             $this->testService->startTestResult($result);
-
             $testQuestionCount = $result->test->questions()->count();
             $userAnsweredCount = $result->answers()->count();
 
+
+            // проверить кнопку завершения
+            if ($finish) { // TODO: дописать проверку на все ответы
+                if (!empty($result->test->opt_fullonly)) {
+                    if ($testQuestionCount == $userAnsweredCount) {
+                        $this->testService->endTest($result);
+                        return redirect()->route('site:index')->with(['success' => 'Тест завершен по требованию пользователя после ответа на все вопросы']);
+                    } else {
+                        return redirect()->back()->withErrors('Необходимо ответить на все вопросы');
+                    }
+                }
+                $this->testService->endTest($result);
+                return redirect()->route('site:index')->with(['success' => 'Тест завершен по требованию пользователя']);
+
+            }
             // TODO: success message
             // проверить автоматическое завершение теста
             if ($result->test->opt_timelimit) { // TODO: флеш мессадж о завершении теста
                 $diff = Carbon::now()->diffInMinutes($result->start_at);
                 if ($diff >= $result->test->opt_timelimit) {
                     $this->testService->endTest($result);
+                    return redirect()->route('site:index')->with(['success' => 'Тест завершен по истечении времени']);
                 }
             }
 
-            // проверить кнопку завершения
-            if ($finish) { // TODO: дописать проверку на все ответы
 
-                $this->testService->endTest($result);
-            }
             // если все вопросы отвечены и нельзя перематывать назад - автоматически завершить тест
             if (($testQuestionCount == $userAnsweredCount) && empty($result->test->opt_previous)) {
                 $this->testService->endTest($result);
-            }
-
-            if (!empty($result->end_at)) {
-                return redirect()->route('site:index');
+                return redirect()->route('site:index')->with(['success' => 'Тест завершен, все вопросы отвечены']);
             }
 
             // навигация по вопросам

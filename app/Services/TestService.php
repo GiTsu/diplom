@@ -56,15 +56,17 @@ class TestService
                 break;
             case Question::MULTI_QUESTION:
                 $correctAnswers = json_decode($answer->value);
-                //dd($correctAnswers);
-                //dd($answer->getAttributes(), $questionItems);
                 $correct = true;
-                if ($questionItems) {
-                    foreach ($questionItems as $qi) {
-                        if (!empty($qi->is_correct) && !in_array($qi->id, $correctAnswers)) {
-                            $correct = false;
+                if (is_array($correctAnswers)) {
+                    if ($questionItems) {
+                        foreach ($questionItems as $qi) {
+                            if (!empty($qi->is_correct) && !in_array($qi->id, $correctAnswers)) {
+                                $correct = false;
+                            }
                         }
                     }
+                } else {
+                    $correct = false;
                 }
                 break;
 
@@ -235,6 +237,10 @@ class TestService
                 $this->addServiceError('Выберите либо длительность теста либо отсутствие ограничения');
                 return null;
             }
+            if (!empty($model->opt_fullonly)) {
+                $model->opt_return = 1;
+                $model->opt_skip = 1;
+            }
             // новый код проверки
             if ($model->save()) {
                 return $model;
@@ -260,6 +266,10 @@ class TestService
                 return false;
             }
             // новый код проверки
+            if (!empty($model->opt_fullonly)) {
+                $model->opt_return = 1;
+                $model->opt_skip = 1;
+            }
             return $model->save();
         }
         return false;

@@ -107,15 +107,18 @@
                             </ul>
                         </div>
                         <div class="alert alert-light">
-
-                            <a class="btn btn-outline-secondary"
-                               href="{{route('test:next',['result'=>$result->id, 'goPrevious'=>$question->id])}}">
-                                Предыдущий вопрос
-                            </a>
-                            <a class="btn btn-outline-secondary"
-                               href="{{route('test:next',['result'=>$result->id, 'goNext'=>$question->id])}}">
-                                Следующий вопрос
-                            </a>
+                            @if(!empty($result->test->opt_return))
+                                <a class="btn btn-outline-secondary"
+                                   href="{{route('test:next',['result'=>$result->id, 'goPrevious'=>$question->id])}}">
+                                    Предыдущий вопрос
+                                </a>
+                            @endif
+                            @if(!empty($result->test->opt_skip))
+                                <a class="btn btn-outline-secondary"
+                                   href="{{route('test:next',['result'=>$result->id, 'goNext'=>$question->id])}}">
+                                    Следующий вопрос
+                                </a>
+                            @endif
                             <a class="btn btn-outline-danger"
                                href="{{route('test:next',['result'=>$result->id, 'finish'=>true])}}">
                                 Завершить тест

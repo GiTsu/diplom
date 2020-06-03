@@ -88,7 +88,7 @@
                                     class="alert alert-light status-box {{($correct===true)?'status-correct':''}} {{($correct===false)?'status-incorrect':''}}"
                                     data-status="">
                                     <div class="row">
-                                        @if (($correct==null) || ($correct==true))
+                                        @if (($correct===null) || ($correct===true))
                                             <div class="col">
                                                 <a class="btn btn-block btn-outline-success font-weight-bold status-change {{($correct===true)?'status-chosen':''}}"
                                                    data-status="1">
@@ -96,7 +96,7 @@
                                                 </a>
                                             </div>
                                         @endif
-                                        @if (($correct==null) || ($correct==false))
+                                        @if (($correct===null) || ($correct===false))
                                             <div class="col">
                                                 <a class="btn btn-block btn-outline-danger  font-weight-bold  status-change  {{($correct===false)?'status-chosen':''}}"
                                                    data-status="0">
