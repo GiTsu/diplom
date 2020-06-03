@@ -52,12 +52,17 @@
                                             @break
                                             @case(\App\Models\Question::MULTI_QUESTION)
                                             @php
-                                                $items = \App\Models\QuestionItem::query()->whereIn('id', json_decode($answer->value))->each(
+                                                $av=json_decode($answer->value);
+                                                if (is_array($av)){
+                                                    $items = \App\Models\QuestionItem::query()->whereIn('id', $av)->each(
                                                     function($value, $key){
                                                         //$json= json_decode();
                                                         echo('<div>'.$value->text.'</div>');
                                                     }
                                                 );
+                                                } else {
+                                                    echo('<div>Нулевое значение ответа</div>');
+                                                }
                                             @endphp
 
                                             @break
