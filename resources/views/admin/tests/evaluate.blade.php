@@ -14,11 +14,14 @@
         <div class="card-body">
             <div class="row">
                 <div class="col">
+                    @php
+                        $marked=0;
+                    @endphp
                     @if($result->answers)
                         @foreach($result->answers as $answer)
                             @php
                                 $correct=\App\Services\TestService::checkCorrect($answer);
-                                $marked=0;
+
                                 if ($correct===true) {
                                     $questionsCorrectCount++;
                                 }

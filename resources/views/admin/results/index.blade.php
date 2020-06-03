@@ -35,7 +35,7 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    {{Form::submit()}}
+                    {{Form::submit('Поиск', ['class'=>'btn btn-sn btn-primary'])}}
                 </div>
             </div>
             {{Form::close()}}
@@ -66,15 +66,17 @@
                         <a title="{{$result->start_at}}">начат</a>
                     @endif
                     @if(!empty($result->end_at))
-                        ,<a title="{{$result->end_at}}">закончен</a>
+                        ,   <a title="{{$result->end_at}}">закончен</a>
                     @endif
                     @if(!empty($result->start_at) && !empty($result->end_at))
-                        ,<a title="{{$result->end_at}}"> {{$result->end_at->diffInMinutes($result->start_at)}} мин</a>
+                        ,   <a title="{{$result->end_at}}"> {{$result->end_at->diffInMinutes($result->start_at)}}
+                            мин</a>
                     @endif
                 </td>
                 <td>
                     @if(!empty($result->mark))
-                        <a href="{{route('admin:results:retest', [$result->user_id, $result->test_id])}}" class="btn btn-sm btn-outline-success">задать снова</a>
+                        <a href="{{route('admin:results:retest', [$result->user_id, $result->test_id])}}"
+                           class="btn btn-sm btn-outline-success">задать снова</a>
                         {{$marks[$result->mark]}}, {{$result->percent}}%
                     @else
                         @if (!empty($result->end_at))

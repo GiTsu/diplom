@@ -24,7 +24,7 @@
 
                 </div>
                 <div class="card-footer">
-                    {{Form::submit()}}
+                    {{Form::submit('Поиск', ['class'=>'btn btn-sn btn-primary'])}}
                 </div>
             </div>
             {{Form::close()}}

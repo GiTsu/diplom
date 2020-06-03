@@ -21,17 +21,17 @@
                     </div>
 
                     <div class="form-group form-check">
-                        {{Form::checkbox('opt_skip', 1,null,  ['class'=>'form-check-input'])}}
+                        {{Form::checkbox('opt_skip', 1, true,  ['class'=>'form-check-input'])}}
                         {{Form::label('opt_skip', 'Можно пропускать вопросы', ['class'=>'form-check-label'])}}
                     </div>
 
                     <div class="form-group form-check">
-                        {{Form::checkbox('opt_return', 1,null,  ['class'=>'form-check-input'])}}
+                        {{Form::checkbox('opt_return', 1, true,  ['class'=>'form-check-input'])}}
                         {{Form::label('description', 'Можно возвращаться к пропущенным', ['class'=>'form-check-label'])}}
                     </div>
 
                     <div class="form-group form-check">
-                        {{Form::checkbox('opt_fullonly', 1,null,  ['class'=>'form-check-input'])}}
+                        {{Form::checkbox('opt_fullonly', 1, true,  ['class'=>'form-check-input'])}}
                         {{Form::label('opt_fullonly', 'Завершать только со всеми ответами', ['class'=>'form-check-label'])}}
                     </div>
 
