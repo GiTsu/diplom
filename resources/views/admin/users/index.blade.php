@@ -8,7 +8,7 @@
         <tr>
             <th>#</th>
             <th>Имя</th>
-            <th>Имейл</th>
+            <th>E-mail</th>
             <th>Роль</th>
             <th>Группа</th>
         </tr>

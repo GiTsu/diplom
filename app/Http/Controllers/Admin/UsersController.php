@@ -113,11 +113,11 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        $this->userService->destroyUser(User::query()->findOrFail($id));
-        return redirect()->route('user.index');
-
+        if ($this->userService->destroyUser(User::query()->findOrFail($id))) {
+            return redirect()->route('user.index');
+        }
+        return redirect()->back()->withErrors($this->userService->getServiceErrors());
     }
-
 
     public function setPassword(Request $request, User $user)
     {
@@ -137,11 +137,15 @@ class UsersController extends Controller
 
     public function setGroup(Request $request, User $user)
     {
-        $user->group_id = $request->input('group_id');
-        if (!$user->save()) {
-            return redirect()->back()->withErrors('Не удалось сменить группу');
+        if ($user->hasRole('student')) {
+            $user->group_id = $request->input('group_id');
+            if (!$user->save()) {
+                return redirect()->back()->withErrors('Не удалось сменить группу');
+            }
+            return redirect()->back();
         }
-        return redirect()->back();
+        return redirect()->back()->withErrors('Группу можно поставить только студентам');
+
     }
 
     public function removeRole(Request $request, User $user, $slug)

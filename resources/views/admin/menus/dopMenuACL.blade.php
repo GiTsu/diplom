@@ -17,7 +17,7 @@
                 </i> добавить роль
             </a>
         </li>
-        <li>
+        {{--<li>
             <a href="{{route('permission.index')}}">
                 <i class="metismenu-icon">
                 </i> список пермишенов
@@ -29,7 +29,7 @@
                 </i> добавить пермишен
             </a>
         </li>
-        {{-- TODO: вернуть доки <li>
+         TODO: вернуть доки <li>
              <a target="_blank" href="https://github.com/kodeine/laravel-acl/wiki/Validate-Permissions-and-Roles">
                  <i class="metismenu-icon">
                  </i> документация

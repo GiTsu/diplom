@@ -110,6 +110,7 @@
             'questionTypes'=>$questionTypes,
             'subjects'=>$subjects
             ])
+            {{--
             @widget('GenericModalWidget', [
             'modal'=>true,
             'includeView'=>'admin.questions.enter_id',
@@ -117,7 +118,7 @@
             'modalTitle'=>'Выбор существующего',
             'test'=>$test,
             'selectQuestions'=>$selectQuestions,
-            ])
+            ])--}}
         </div>
     </div>
 @endsection

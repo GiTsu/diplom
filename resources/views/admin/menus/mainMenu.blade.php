@@ -77,20 +77,43 @@
     @endrole
     @yield('dopMenu')
     <li class="mm-active">
+        <a href="#">
+            <i class="metismenu-icon pe-7s-user"></i>
+            Учетная запись
+            <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+        </a>
         <ul>
+            <li>
+                <a>
+                    <i class="metismenu-icon">
+                    </i> {{Auth::user()->name}}
+                </a>
+            </li>
+            <li>
+                <a>
+                    <i class="metismenu-icon">
+                    </i> {{Auth::user()->email}} (#{{Auth::user()->id}})
+                </a>
+            </li>
             <li>
                 <a href="{{ route('logout') }}"
                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
                    class="font-weight-bold"
                 >
                     <i class="metismenu-icon">
-                    </i> {{ __('Logout') }}
+                    </i> Выйти
                 </a>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST"
                       style="display: none;">
                     @csrf
                 </form>
             </li>
+        </ul>
+    </li>
+    <li class="mm-active">
+        <ul>
+
+
         </ul>
     </li>
 </ul>

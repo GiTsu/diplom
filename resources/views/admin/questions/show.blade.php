@@ -41,7 +41,6 @@
             Варианты ответа
         </div>
         <div class="card-body">
-            {{-- TODO: вывод вариантов ответа в зависимости от типа--}}
             <table class="table table-striped">
                 <tr>
                     <td>
@@ -53,6 +52,7 @@
                     <td>
                         Соответствие
                     </td>
+                    <td></td>
                 </tr>
 
                 @forelse($question->questionItems as $questionItem)
@@ -81,6 +81,11 @@
                             @else
                                 не требуется
                             @endif
+                        </td>
+                        <td>
+                            {{Form::open(['route'=>['questionItems.destroy', $questionItem->id], 'method'=>'DELETE'])}}
+                            {{Form::submit('Удалить', ['class'=>'btn btn-sm btn-danger'])}}
+                            {{Form::close()}}
                         </td>
                     </tr>
                 @empty

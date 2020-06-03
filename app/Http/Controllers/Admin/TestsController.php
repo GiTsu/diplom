@@ -124,7 +124,7 @@ class TestsController extends Controller
         if (!$this->testService->updateTest($test, $request->all())) {
             return redirect()->back()->withErrors($this->testService->getServiceErrors());
         }
-        return redirect()->back();
+        return redirect()->route('tests.show', [$test->id]);
     }
 
     /**

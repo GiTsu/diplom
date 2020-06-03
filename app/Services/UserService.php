@@ -93,7 +93,11 @@ class UserService
     public function destroyUser(User $user)
     {
         // TODO: внедрить проверки и подчистку базы
-        return $user->delete();
+        if (!$user->hasRole('admin')) {
+            return $user->delete();
+        }
+        $this->addServiceError('Нельзя удалить аккаунт с правами администратора');
+        return false;
     }
 
     /**

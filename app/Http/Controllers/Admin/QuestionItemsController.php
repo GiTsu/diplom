@@ -123,6 +123,12 @@ class QuestionItemsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $qi = QuestionItem::query()->findOrFail($id);
+        try {
+            $qi->delete();
+        } catch (\Throwable $e) {
+            return redirect()->back()->withErrors('Не удалось удалить ответ, отвяжите его от другого ответа');
+        }
+        return redirect()->back();
     }
 }
