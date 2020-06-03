@@ -46,6 +46,7 @@ class HomeController extends Controller
 
     public function examTest(Request $request, Result $result)
     {
+        
         app('debugbar')->disable();
         $goPrevious = $request->input('goPrevious');
         $goNext = $request->input('goNext');

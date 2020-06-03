@@ -35,7 +35,7 @@ CREATE TABLE `answer_items` (
   CONSTRAINT `answer_items_FK` FOREIGN KEY (`question_item_id`) REFERENCES `question_items` (`id`) ON DELETE CASCADE,
   CONSTRAINT `answer_items_FK_1` FOREIGN KEY (`result_id`) REFERENCES `results` (`id`) ON DELETE CASCADE,
   CONSTRAINT `answer_items_FK_2` FOREIGN KEY (`question_id`) REFERENCES `questions` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -322,7 +322,6 @@ CREATE TABLE `question_items` (
 
 LOCK TABLES `question_items` WRITE;
 /*!40000 ALTER TABLE `question_items` DISABLE KEYS */;
-INSERT INTO `question_items` VALUES (17,'They',NULL,NULL),(18,'Are',NULL,NULL),(19,'The',1,NULL),(20,'Материнская плата',NULL,NULL),(21,'Корпус',1,NULL),(22,'Javascript',NULL,NULL),(23,'C++',1,NULL),(24,'Pascal',1,NULL),(25,'If',NULL,27),(26,'case',NULL,28),(27,'else',NULL,NULL),(28,'break',NULL,NULL),(29,'One',NULL,NULL),(30,'поход на Москву Добровольческой армии А. И. Деникина',NULL,36),(31,'мятеж Чехословацкого корпуса',NULL,35),(32,'разгром войск П. Н. Врангеля в Крыму',NULL,37),(33,'завершение Гражданской войны на Дальнем Востоке',NULL,66),(34,'1917 г.',NULL,NULL),(35,'1918 г.',NULL,NULL),(36,'1919 г.',NULL,NULL),(37,'1920 г.',NULL,NULL),(38,'1922 г.',NULL,NULL),(40,'Парсуна',NULL,NULL),(41,'эклектика',1,NULL),(42,'фреска',NULL,NULL),(43,'икона',NULL,NULL),(44,'ампир',1,NULL),(45,'придворный театр',NULL,NULL),(46,'земледельцы, заключившие с хозяином земли договор на выполнение работ',NULL,NULL),(47,'свободные или зависимые земледельцы, основная масса населения Древней Руси',NULL,NULL),(48,'люди, находившиеся в полной зависимости от хозяина земли',NULL,NULL),(49,'земледельцы, взявшие ссуду',NULL,NULL),(50,'смерды',NULL,NULL),(51,'холопы',NULL,NULL),(52,'закупы',NULL,NULL),(53,'тиуны',NULL,NULL),(54,'рядовичи',NULL,NULL),(55,'помещики',NULL,NULL),(56,'земледельцы, заключившие с хозяином земли договор на выполнение работ',NULL,64),(57,'свободные или зависимые земледельцы, основная масса населения Древней Руси',NULL,60),(58,'люди, находившиеся в полной зависимости от хозяина земли',NULL,61),(59,'земледельцы, взявшие ссуду',NULL,62),(60,'смерды',NULL,NULL),(61,'холопы',NULL,NULL),(62,'закупы',NULL,NULL),(63,'тиуны',NULL,NULL),(64,'рядовичи',NULL,NULL),(65,'помещики',NULL,NULL),(66,'1921 г.',NULL,NULL);
 /*!40000 ALTER TABLE `question_items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -351,7 +350,6 @@ CREATE TABLE `questions` (
 
 LOCK TABLES `questions` WRITE;
 /*!40000 ALTER TABLE `questions` DISABLE KEYS */;
-INSERT INTO `questions` VALUES (24,6,2,'Задание 1','<!-- wp:paragraph -->\r\n<p>Расположите в хронологической последовательности исторические события. Запишите цифры, которыми обозначены исторические события в правильной последовательности.</p>\r\n<!-- /wp:paragraph -->\r\n\r\n<!-- wp:paragraph -->\r\n<p>1) Убийство царевича Дмитрия в Угличе</p>\r\n<!-- /wp:paragraph -->\r\n\r\n<!-- wp:paragraph -->\r\n<p>2) Регентство Елены Глинской</p>\r\n<!-- /wp:paragraph -->\r\n\r\n<!-- wp:paragraph -->\r\n<p>3) Варфоломеевская ночь</p>\r\n<!-- /wp:paragraph -->'),(25,6,3,'Задание 2','<!-- wp:paragraph -->\r\n<p>Установите соответствие между событиями Гражданской войны и их датами</p>\r\n<!-- /wp:paragraph -->'),(26,6,1,'Задание 3','<!-- wp:paragraph -->\r\n<p>Ниже приведены термины, связанные с историей русской культуры. Все они, за исключением двух, относятся к русской культуре XVII в. Выберите термины, относящиеся к другому историческому периоду.</p>\r\n<!-- /wp:paragraph -->'),(27,6,2,'Задание 4','<!-- wp:paragraph -->\r\n<p>Запишите термин, о котором идёт речь.</p>\r\n<!-- /wp:paragraph -->\r\n\r\n<!-- wp:paragraph -->\r\n<p>В XIX — начале XX в. единица сословного крестьянского административно-территориального деления в России, объединявшая несколько сельских общин, органы правления которой решали вопросы распределения государственных повинностей (податей, рекрутчины) и др.</p>\r\n<!-- /wp:paragraph -->'),(29,6,3,'Задание 5','<!-- wp:paragraph -->\r\n<p>Установите соответствие между определениями и понятиями</p>\r\n<!-- /wp:paragraph -->');
 /*!40000 ALTER TABLE `questions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -380,7 +378,6 @@ CREATE TABLE `rel_questions_items` (
 
 LOCK TABLES `rel_questions_items` WRITE;
 /*!40000 ALTER TABLE `rel_questions_items` DISABLE KEYS */;
-INSERT INTO `rel_questions_items` VALUES (26,25,30),(27,25,31),(28,25,32),(29,25,33),(30,25,34),(31,25,35),(32,25,36),(33,25,37),(34,25,38),(36,26,40),(37,26,41),(38,26,42),(39,26,43),(40,26,44),(41,26,45),(52,29,56),(53,29,57),(54,29,58),(55,29,59),(56,29,60),(57,29,61),(58,29,62),(59,29,63),(60,29,64),(61,29,65),(62,25,66);
 /*!40000 ALTER TABLE `rel_questions_items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -409,36 +406,7 @@ CREATE TABLE `rel_tests_questions` (
 
 LOCK TABLES `rel_tests_questions` WRITE;
 /*!40000 ALTER TABLE `rel_tests_questions` DISABLE KEYS */;
-INSERT INTO `rel_tests_questions` VALUES (26,9,24),(27,9,25),(28,9,26),(29,9,27),(31,9,29);
 /*!40000 ALTER TABLE `rel_tests_questions` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `rel_users_tests`
---
-
-DROP TABLE IF EXISTS `rel_users_tests`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `rel_users_tests` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` bigint(20) unsigned NOT NULL,
-  `test_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `rel_users_tests_FK` (`user_id`),
-  KEY `rel_users_tests_FK_1` (`test_id`),
-  CONSTRAINT `rel_users_tests_FK` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `rel_users_tests_FK_1` FOREIGN KEY (`test_id`) REFERENCES `tests` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `rel_users_tests`
---
-
-LOCK TABLES `rel_users_tests` WRITE;
-/*!40000 ALTER TABLE `rel_users_tests` DISABLE KEYS */;
-/*!40000 ALTER TABLE `rel_users_tests` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -461,7 +429,7 @@ CREATE TABLE `results` (
   KEY `results_FK_1` (`user_id`),
   CONSTRAINT `results_FK` FOREIGN KEY (`test_id`) REFERENCES `tests` (`id`) ON DELETE CASCADE,
   CONSTRAINT `results_FK_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -585,7 +553,6 @@ CREATE TABLE `tests` (
 
 LOCK TABLES `tests` WRITE;
 /*!40000 ALTER TABLE `tests` DISABLE KEYS */;
-INSERT INTO `tests` VALUES (9,'Тест по истории \"первый\"',11,1,0,1,1,NULL,'Пробный вариант теста');
 /*!40000 ALTER TABLE `tests` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -619,7 +586,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (8,'Амин Админович','admin@diplom.test',NULL,'$2y$10$uG5JppsJHJ2zvDhVqfeLpur3lCHjKzG4IEVjkCd/0tb3UHcFZKaj.','8UeAhRiZ7Eqm80uxPFfOAFJ5OqwiiILQ7JuGPsQUL2BJTUaQlpbwRSCsj164','2020-05-05 03:22:44','2020-05-25 20:03:08',NULL),(11,'Исаак Исаакович Ньютон','teacher@diplom.test',NULL,'$2y$10$uj9HiIPKqr3KvUplg6ozS.xHS1Wx.MdhVLyJl3415k011CgoSlugi','zL1nfzh8LyF2rq9SoV4nnCuDmp5FmEAkMvvfQ6qihhjEoTT2ncDFmaIOZIvZ','2020-05-25 19:58:05','2020-05-26 06:44:55',NULL),(12,'Барт Гомерович Симпсон','student@diplom.test',NULL,'$2y$10$aigp3P7ofzuez.J9LvdWA.mzIt19fLELrHafo/oOzTjfCyal7GplK','Gwwl2jYSADrl8nvYarbqIe52zoAFHLkwSiNUWB9M61HJJcNzptn3t7bPeHza','2020-05-25 19:59:03','2020-05-26 06:42:56',4),(13,'Лиза Гомеровна Симпсон','student2@diplom.test',NULL,'$2y$10$l5JYGC9jn8wBdWJjNYCtNe4e3oj7mL5mBeGqGuBIyhk5Zyk0IeT7S',NULL,'2020-05-26 06:43:40','2020-05-26 06:43:50',5);
+INSERT INTO `users` VALUES (8,'Амин Админович','admin@diplom.test',NULL,'$2y$10$uG5JppsJHJ2zvDhVqfeLpur3lCHjKzG4IEVjkCd/0tb3UHcFZKaj.','8UeAhRiZ7Eqm80uxPFfOAFJ5OqwiiILQ7JuGPsQUL2BJTUaQlpbwRSCsj164','2020-05-05 03:22:44','2020-05-25 20:03:08',NULL),(11,'Исаак Исаакович Ньютон','teacher@diplom.test',NULL,'$2y$10$uj9HiIPKqr3KvUplg6ozS.xHS1Wx.MdhVLyJl3415k011CgoSlugi','bNsue2LKfRdMXTdenfhEE6K72FQB0Ske0natZKFjfnVCobMqei2PQaIPyyT5','2020-05-25 19:58:05','2020-05-26 06:44:55',NULL),(12,'Барт Гомерович Симпсон','student@diplom.test',NULL,'$2y$10$aigp3P7ofzuez.J9LvdWA.mzIt19fLELrHafo/oOzTjfCyal7GplK','CE1uaroBRLJSIodD5mYnp3yktKCQFr4WBvDNNqQ6dub82MRrJWTdqcz2Bgoe','2020-05-25 19:59:03','2020-05-26 06:42:56',4),(13,'Лиза Гомеровна Симпсон','student2@diplom.test',NULL,'$2y$10$l5JYGC9jn8wBdWJjNYCtNe4e3oj7mL5mBeGqGuBIyhk5Zyk0IeT7S',NULL,'2020-05-26 06:43:40','2020-05-26 06:43:50',5);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -632,4 +599,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-06-03  5:40:45
+-- Dump completed on 2020-06-03 12:36:17
