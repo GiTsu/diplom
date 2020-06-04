@@ -25,10 +25,7 @@ Route::get('/clearcache', function (Request $request) {
  * Доступ авторизованного пользователя
  * */
 Route::group([
-    //'prefix' => '/admin',
-    //'namespace' => 'Admin',
-    'middleware' => ['auth'], //, 'acl' - пока проверка только на авторизацию
-    //'is' => 'superadmin',
+    'middleware' => ['auth'],
 ], function () {
     Route::get('/', 'HomeController@index')->name('site:index');
     Route::get('/home', 'HomeController@home')->name('home');

@@ -20,7 +20,7 @@ class HomeController extends Controller
     }
 
     /**
-     * Show the application dashboard.
+     * Главная страница кабинета
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
@@ -46,7 +46,7 @@ class HomeController extends Controller
 
     public function examTest(Request $request, Result $result)
     {
-        
+
         app('debugbar')->disable();
         $goPrevious = $request->input('goPrevious');
         $goNext = $request->input('goNext');
