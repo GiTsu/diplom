@@ -111,10 +111,62 @@ class TestService
         return true;
     }
 
+    public function checkSetMark(Result $result)
+    {
+        $need = true;
+        // пройти по ответам, если нет ручных типов, то на вычисление
+
+        $answers = $result->answers;
+        if ($answers) {
+            foreach ($answers as $a) {
+                if ($a->question->type_id == Question::ENTER_QUESTION) {
+                    $need = false;
+                }
+            }
+        }
+        return $need;
+    }
+
+    public function setAutoMark(Result $result)
+    {
+        $totalQuestions = $result->test->questions->count();
+        $correct = 0;
+
+        if ($answers = $result->answers) {
+            foreach ($answers as $a) {
+                if (self::checkCorrect($a)) {
+                    $correct++;
+                }
+            }
+        }
+        $percent = (!empty($totalQuestions)) ? round(($correct / $totalQuestions), 4) * 100 : 0;
+        $result->percent = $percent;
+
+        $result->mark = 2;
+
+        if ($percent >= 60) {
+            $result->mark = 3;
+        }
+        if ($percent >= 70) {
+            $result->mark = 4;
+        }
+        if ($percent >= 85) {
+            $result->mark = 5;
+        }
+        return 'Результат теста #' . $result->id . ': правильно - ' . $result->percent . '%, оценка - ' . $result->mark . '.';
+    }
+
     public function endTest(Result $result)
     {
         $result->end_at = Carbon::now();
-        return $result->save();
+        // проверить на автоматическую оценку
+        if ($this->checkSetMark($result)) {
+            $message = $this->setAutoMark($result);
+        } else {
+            $message = "Тест требует ручной проверки преподавателем";
+        }
+        $result->save();
+        return $message;
     }
 
     public function getNextQuestion(User $user, Test $test, $lastId = 0)

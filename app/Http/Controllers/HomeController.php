@@ -64,14 +64,14 @@ class HomeController extends Controller
             if ($finish) { // TODO: дописать проверку на все ответы
                 if (!empty($result->test->opt_fullonly)) {
                     if ($testQuestionCount == $userAnsweredCount) {
-                        $this->testService->endTest($result);
-                        return redirect()->route('site:index')->with(['success' => 'Тест завершен по требованию пользователя после ответа на все вопросы']);
+                        $message = $this->testService->endTest($result);
+                        return redirect()->route('site:index')->with(['success' => 'Тест завершен по требованию пользователя после ответа на все вопросы. ' . $message]);
                     } else {
                         return redirect()->back()->withErrors('Необходимо ответить на все вопросы');
                     }
                 }
-                $this->testService->endTest($result);
-                return redirect()->route('site:index')->with(['success' => 'Тест завершен по требованию пользователя']);
+                $message = $this->testService->endTest($result);
+                return redirect()->route('site:index')->with(['success' => 'Тест завершен по требованию пользователя. ' . $message]);
 
             }
             // TODO: success message
@@ -79,16 +79,16 @@ class HomeController extends Controller
             if ($result->test->opt_timelimit) { // TODO: флеш мессадж о завершении теста
                 $diff = Carbon::now()->diffInMinutes($result->start_at);
                 if ($diff >= $result->test->opt_timelimit) {
-                    $this->testService->endTest($result);
-                    return redirect()->route('site:index')->with(['success' => 'Тест завершен по истечении времени']);
+                    $message = $this->testService->endTest($result);
+                    return redirect()->route('site:index')->with(['success' => 'Тест завершен по истечении времени. ' . $message]);
                 }
             }
 
 
             // если все вопросы отвечены и нельзя перематывать назад - автоматически завершить тест
             if (($testQuestionCount == $userAnsweredCount) && empty($result->test->opt_previous)) {
-                $this->testService->endTest($result);
-                return redirect()->route('site:index')->with(['success' => 'Тест завершен, все вопросы отвечены']);
+                $message = $this->testService->endTest($result);
+                return redirect()->route('site:index')->with(['success' => 'Тест завершен, все вопросы отвечены. ' . $message]);
             }
 
             // навигация по вопросам
@@ -122,22 +122,27 @@ class HomeController extends Controller
     {
         // TODO: выбрать старый ответ!
         $user = \Auth::user();
-
         $question = Question::query()->findOrFail($request->input('question_id'));
-
         $value = null;
         // обработка типа вопроса
         switch ($question->type_id) {
             case Question::SINGLE_QUESTION:
                 $value = $request->input('value');
+                if (!$value) {
+                    return redirect()->back()->withErrors('Не выбран вариант ответа');
+                }
                 break;
             case Question::MULTI_QUESTION:
-
                 $value = json_encode($request->input('value'));
-
+                if (!$value) {
+                    return redirect()->back()->withErrors('Не выбран вариант ответа');
+                }
                 break;
             case Question::ENTER_QUESTION:
                 $value = $request->input('value');
+                if (!$value) {
+                    return redirect()->back()->withErrors('Не выбран вариант ответа');
+                }
                 break;
             case Question::COMPLY_QUESTION:
                 $value = json_encode($request->input('linked'));

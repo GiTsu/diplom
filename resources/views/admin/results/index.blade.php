@@ -77,7 +77,7 @@
                     @if(!empty($result->mark))
                         <a href="{{route('admin:results:retest', [$result->user_id, $result->test_id])}}"
                            class="btn btn-sm btn-outline-success">задать снова</a>
-                        {{$marks[$result->mark]}}, {{$result->percent}}%
+                        {{$result->percent}}%, {{$marks[$result->mark]}}
                     @else
                         @if (!empty($result->end_at))
                             <a href="{{route('test:showEvaluate', [$result->id])}}" class="btn btn-sm btn-warning">оценить</a>
