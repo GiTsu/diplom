@@ -48,8 +48,7 @@ class TestsController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     *
+     * Список тестов
      * @return \Illuminate\Http\Response
      */
     public function index()
