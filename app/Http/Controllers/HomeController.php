@@ -120,7 +120,6 @@ class HomeController extends Controller
 
     public function examTestAnswer(Request $request, Result $result)
     {
-        // TODO: выбрать старый ответ!
         $user = \Auth::user();
         $question = Question::query()->findOrFail($request->input('question_id'));
         $value = null;

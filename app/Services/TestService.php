@@ -179,6 +179,11 @@ class TestService
 
         if ($question) {
             return $question;
+        } else { // вопрос был последним, выдать указанный
+            $question = Question::query()->find($lastId);
+            if ($question) {
+                return $question;
+            }
         }
         $this->addServiceError('Не найдено вопросов после заданного');
         return null;
