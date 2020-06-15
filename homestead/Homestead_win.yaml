@@ -1,0 +1,35 @@
+---
+ip: "192.168.10.10"
+memory: 2048
+cpus: 2
+provider: virtualbox
+
+authorize: ~/.ssh/id_rsa.pub
+
+keys:
+    - ~/.ssh/id_rsa
+
+folders:
+    - map: c:/diplom
+      to: /home/vagrant/code/diplom
+
+sites:
+    - map: diplom.test
+      to: /home/vagrant/code/diplom/public
+
+databases:
+    - homestead
+
+features:
+    - mariadb: true
+    - ohmyzsh: false
+    - webdriver: false
+
+backup: true # бэкап при уничтожении машины
+
+# ports:
+#     - send: 50000
+#       to: 5000
+#     - send: 7777
+#       to: 777
+#       protocol: udp
